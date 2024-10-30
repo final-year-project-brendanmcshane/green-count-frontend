@@ -1,5 +1,11 @@
 <p>{{ message }}</p>
 
+<button (click)="fetchData()">Fetch Data</button>
+<button (click)="addData()">Add Data</button>
+
+<div *ngIf="data">
+  <pre>{{ data | json }}</pre>
+</div>
 
 
 
