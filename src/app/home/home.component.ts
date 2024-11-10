@@ -28,10 +28,19 @@ export class HomeComponent implements OnInit {
   }
 
   addData(): void {
-    const payload = { id: Math.floor(Math.random() * 1000) }; // Generate a random id
+    const payload = {
+      Name: "Test Name",  // Replace with a sample string
+      Value: 123.45       // Replace with an actual number (integer or float)
+    };
     this.http.post<any>('http://127.0.0.1:5000/add', payload).subscribe(response => {
       console.log("Data added:", response);
       this.fetchData(); // Refresh data after adding
+    }, error => {
+      console.error("Error adding data:", error);
     });
   }
+  
+  
+
+  
 }
