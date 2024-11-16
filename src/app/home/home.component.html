@@ -1,3 +1,7 @@
+<h1>GreenCount Dashboard</h1>
+<p>Manage your data below:</p>
+
+
 <p>{{ message }}</p>
 
 <button (click)="fetchData()">Fetch Data</button>
@@ -6,6 +10,11 @@
 <div *ngIf="data">
   <pre>{{ data | json }}</pre>
 </div>
+
+
+<div *ngIf="isLoading">Loading...</div>
+<pre *ngIf="!isLoading">{{ data | json }}</pre>
+
 
 
 

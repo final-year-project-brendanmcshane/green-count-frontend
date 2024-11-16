@@ -21,11 +21,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  fetchData(): void {
-    this.http.get<any>('http://127.0.0.1:5000/get').subscribe(response => {
-      this.data = response;
-    });
-  }
+  // fetchData(): void {
+  //   this.http.get<any>('http://127.0.0.1:5000/get').subscribe(response => {
+  //     this.data = response;
+  //   });
+  // }
 
   addData(): void {
     const payload = {
@@ -39,8 +39,19 @@ export class HomeComponent implements OnInit {
       console.error("Error adding data:", error);
     });
   }
-  
-  
 
-  
+  isLoading: boolean = false;
+
+  fetchData(): void {
+    this.isLoading = true;
+    this.http.get<any>('http://127.0.0.1:5000/get').subscribe(response => {
+      this.data = response;
+      this.isLoading = false;
+    });
+  }
+
+
+
+
+
 }
