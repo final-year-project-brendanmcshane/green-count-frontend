@@ -7,14 +7,23 @@
 <button (click)="fetchData()">Fetch Data</button>
 <button (click)="addData()">Add Data</button>
 
-<div *ngIf="data">
+<!-- <div *ngIf="data">
   <pre>{{ data | json }}</pre>
-</div>
+</div> -->
 
 
 <div *ngIf="isLoading">Loading...</div>
 <pre *ngIf="!isLoading">{{ data | json }}</pre>
 
 
+<div *ngIf="data">
+  <ul>
+    <li *ngFor="let item of data">
+      <strong>Metric:</strong> {{ item.Metric }},
+      <strong>Unit:</strong> {{ item.Unit }},
+      <strong>Value:</strong> {{ item.Value }}
+    </li>
+  </ul>
+</div>
 
 

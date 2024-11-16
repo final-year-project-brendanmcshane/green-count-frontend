@@ -29,16 +29,17 @@ export class HomeComponent implements OnInit {
 
   addData(): void {
     const payload = {
-      Name: "Test Name",  // Replace with a sample string
-      Value: 123.45       // Replace with an actual number (integer or float)
+      Metric: "Energy Usage", // Example default value
+      Unit: "kWh",            // Example default value
+      Value: Math.random() * 100 // Random value for testing
     };
+  
     this.http.post<any>('http://127.0.0.1:5000/add', payload).subscribe(response => {
       console.log("Data added:", response);
       this.fetchData(); // Refresh data after adding
-    }, error => {
-      console.error("Error adding data:", error);
     });
   }
+  
 
   isLoading: boolean = false;
 
