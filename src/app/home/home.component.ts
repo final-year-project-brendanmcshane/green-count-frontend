@@ -28,17 +28,17 @@ export class HomeComponent implements OnInit {
   // }
 
   addData(): void {
-    const payload = {
-      Metric: "Energy Usage", // Example default value
-      Unit: "kWh",            // Example default value
-      Value: Math.random() * 100 // Random value for testing
+    const payload = { 
+      Metric: "Electricity", 
+      Unit: "kWh", 
+      Value: Math.random() * 1000  // Example random value
     };
-  
     this.http.post<any>('http://127.0.0.1:5000/add', payload).subscribe(response => {
       console.log("Data added:", response);
       this.fetchData(); // Refresh data after adding
     });
   }
+  
   
 
   isLoading: boolean = false;

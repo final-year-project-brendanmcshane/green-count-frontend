@@ -17,13 +17,23 @@
 
 
 <div *ngIf="data">
-  <ul>
-    <li *ngFor="let item of data">
-      <strong>Metric:</strong> {{ item.Metric }},
-      <strong>Unit:</strong> {{ item.Unit }},
-      <strong>Value:</strong> {{ item.Value }}
-    </li>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{ item.Metric }}</td>
+        <td>{{ item.Unit }}</td>
+        <td>{{ item.Value }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
 
 
