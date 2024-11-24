@@ -35,5 +35,14 @@
   </table>
 </div>
 
+<button (click)="summarizeData()">Summarize Metric</button>
+<p *ngIf="summary">
+  <strong>Metric:</strong> {{ summary.metric }} <br>
+  <strong>Total:</strong> {{ summary.total }} <br>
+  <strong>Average:</strong> {{ summary.average }} <br>
+  <strong>Count:</strong> {{ summary.count }}
+</p>
+
+
 
 

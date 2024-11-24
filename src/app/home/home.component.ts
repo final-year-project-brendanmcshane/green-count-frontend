@@ -28,9 +28,9 @@ export class HomeComponent implements OnInit {
   // }
 
   addData(): void {
-    const payload = { 
-      Metric: "Electricity", 
-      Unit: "kWh", 
+    const payload = {
+      Metric: "Electricity",
+      Unit: "kWh",
       Value: Math.random() * 1000  // Example random value
     };
     this.http.post<any>('http://127.0.0.1:5000/add', payload).subscribe(response => {
@@ -38,8 +38,8 @@ export class HomeComponent implements OnInit {
       this.fetchData(); // Refresh data after adding
     });
   }
-  
-  
+
+
 
   isLoading: boolean = false;
 
@@ -50,6 +50,20 @@ export class HomeComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
+
+  summary: any = null; // To store summary data
+
+  summarizeData(): void {
+    const metric = "Electricity"; // Example metric; this could be dynamic
+    this.http.get<any>(`http://127.0.0.1:5000/summarize?metric=${metric}`).subscribe(response => {
+      this.summary = response;
+      console.log("Summary data:", response);
+    }, error => {
+      console.error("Error fetching summary:", error);
+    });
+  }
+
 
 
 
