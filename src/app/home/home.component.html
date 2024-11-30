@@ -1,23 +1,21 @@
 <h1>GreenCount Dashboard</h1>
 <p>Manage your data below:</p>
 
-
 <p>{{ message }}</p>
 
-<button (click)="fetchData()">Fetch Data</button>
-<button (click)="addData()">Add Data</button>
+<!-- Action Buttons -->
+<div>
+  <button (click)="fetchData()">Fetch Data</button>
+  <button (click)="summarizeData()">Summarize Metric</button>
+</div>
 
-<!-- <div *ngIf="data">
-  <pre>{{ data | json }}</pre>
-</div> -->
+<!-- Loading Indicator -->
+<div *ngIf="isLoading" style="color: blue;">Loading...</div>
 
-
-<div *ngIf="isLoading">Loading...</div>
-<pre *ngIf="!isLoading">{{ data | json }}</pre>
-
-
+<!-- Data Table -->
 <div *ngIf="data">
-  <table>
+  <h2>Data Table</h2>
+  <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
     <thead>
       <tr>
         <th>Metric</th>
@@ -29,20 +27,31 @@
       <tr *ngFor="let item of data">
         <td>{{ item.Metric }}</td>
         <td>{{ item.Unit }}</td>
-        <td>{{ item.Value }}</td>
+        <td>{{ item.Value | number:'1.2-2' }}</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<button (click)="summarizeData()">Summarize Metric</button>
-<p *ngIf="summary">
-  <strong>Metric:</strong> {{ summary.metric }} <br>
-  <strong>Total:</strong> {{ summary.total }} <br>
-  <strong>Average:</strong> {{ summary.average }} <br>
-  <strong>Count:</strong> {{ summary.count }}
-</p>
+<!-- Input Form for Adding Data -->
+<div style="margin-top: 20px;">
+  <h2>Add New Data</h2>
+  <label for="metric">Metric:</label>
+  <input type="text" id="metric" [(ngModel)]="metric" placeholder="Enter metric (e.g., Electricity)" />
 
+  <label for="unit">Unit:</label>
+  <input type="text" id="unit" [(ngModel)]="unit" placeholder="Enter unit (e.g., kWh)" />
 
+  <label for="value">Value:</label>
+  <input type="number" id="value" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
 
+  <button (click)="addData()">Submit</button>
+</div>
 
+<!-- Summary Section -->
+<div *ngIf="summary" style="margin-top: 20px;">
+  <h2>Summary for Metric: {{ summary.metric }}</h2>
+  <p><strong>Total:</strong> {{ summary.total | number:'1.2-2' }}</p>
+  <p><strong>Average:</strong> {{ summary.average | number:'1.2-2' }}</p>
+  <p><strong>Count:</strong> {{ summary.count }}</p>
+</div>
