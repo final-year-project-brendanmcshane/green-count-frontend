@@ -1,6 +1,4 @@
 <h1>GreenCount Dashboard</h1>
-<p>Manage your data below:</p>
-
 <p>{{ message }}</p>
 
 <!-- Action Buttons -->
@@ -13,7 +11,7 @@
 <div *ngIf="isLoading" style="color: blue;">Loading...</div>
 
 <!-- Data Table -->
-<div *ngIf="data">
+<div *ngIf="data && data.length > 0">
   <h2>Data Table</h2>
   <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
     <thead>
@@ -27,31 +25,45 @@
       <tr *ngFor="let item of data">
         <td>{{ item.Metric }}</td>
         <td>{{ item.Unit }}</td>
-        <td>{{ item.Value | number:'1.2-2' }}</td>
+        <td>{{ item.Value }}</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- Input Form for Adding Data -->
-<div style="margin-top: 20px;">
+<!-- Add Data Form -->
+<div>
   <h2>Add New Data</h2>
-  <label for="metric">Metric:</label>
-  <input type="text" id="metric" [(ngModel)]="metric" placeholder="Enter metric (e.g., Electricity)" />
-
-  <label for="unit">Unit:</label>
-  <input type="text" id="unit" [(ngModel)]="unit" placeholder="Enter unit (e.g., kWh)" />
-
-  <label for="value">Value:</label>
-  <input type="number" id="value" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
-
+  <label>Metric:</label>
+  <input type="text" [(ngModel)]="metric" placeholder="Enter metric (e.g., Electricity)" />
+  <label>Unit:</label>
+  <input type="text" [(ngModel)]="unit" placeholder="Enter unit (e.g., kWh)" />
+  <label>Value:</label>
+  <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
   <button (click)="addData()">Submit</button>
 </div>
 
-<!-- Summary Section -->
-<div *ngIf="summary" style="margin-top: 20px;">
-  <h2>Summary for Metric: {{ summary.metric }}</h2>
-  <p><strong>Total:</strong> {{ summary.total | number:'1.2-2' }}</p>
-  <p><strong>Average:</strong> {{ summary.average | number:'1.2-2' }}</p>
-  <p><strong>Count:</strong> {{ summary.count }}</p>
+<!-- Convert Data Form -->
+<div>
+  <h2>Convert Data</h2>
+  <label>Metric:</label>
+  <input type="text" [(ngModel)]="conversionMetric" placeholder="Enter metric (e.g., Electricity)" />
+
+  <label>Value:</label>
+  <input type="number" [(ngModel)]="conversionValue" placeholder="Enter value to convert" />
+
+  <label>Target Unit:</label>
+  <input type="text" [(ngModel)]="targetUnit" placeholder="Enter target unit (e.g., MWh)" />
+
+  <button (click)="convertData()">Convert</button>
+</div>
+
+
+<!-- Conversion Result -->
+<div *ngIf="convertedData">
+  <h3>Conversion Result</h3>
+  <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
+  <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
+  <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
+  <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
 </div>
