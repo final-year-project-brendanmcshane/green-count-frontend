@@ -22,6 +22,9 @@ export class HomeComponent implements OnInit {
   conversionValue: number | null = null; // User input for conversion value
   targetUnit: string = ''; // User input for target unit
   convertedData: any = null; // To store converted data
+  foodItem: string = '';   // Declare foodItem
+  foodWeight: number = 0;  // Declare foodWeight
+  foodEmissions: number | null = null;  // Declare foodEmissions
 
   constructor(private http: HttpClient) {}
 
@@ -110,6 +113,24 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+  convertFoodImpact(): void {
+    const payload = {
+      FoodItem: this.foodItem,  // e.g., 'beef'
+      Weight: this.foodWeight    // e.g., 2 kg
+    };
+  
+    this.http.post<any>('http://127.0.0.1:5000/food-impact', payload).subscribe(
+      response => {
+        console.log('Food impact calculated:', response);
+        this.foodEmissions = response.Emissions;  // Store the calculated emissions
+      },
+      error => {
+        console.error('Error calculating food impact:', error);
+      }
+    );
+  }
+  
   
   
   
