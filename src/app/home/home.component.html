@@ -58,6 +58,100 @@
   <button (click)="convertData()">Convert</button>
 </div>
 
+<!-- Conversion Result -->
+<div *ngIf="convertedData">
+  <h3>Conversion Result</h3>
+  <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
+  <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
+  <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
+  <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
+
+  <!-- CO2 Emissions Result for Energy Consumption -->
+  <div *ngIf="convertedData.Emissions !== null">
+    <h4>CO2 Emissions:</h4>
+    <p>{{ convertedData.Emissions }} tons of CO2</p>
+  </div>
+</div>
+
+
+<!-- Food Impact Form -->
+<div>
+  <h2>Calculate Food Impact</h2>
+  <label>Food Item:</label>
+  <input type="text" [(ngModel)]="foodItem" placeholder="Enter food item (e.g., beef)" />
+
+  <label>Weight (kg):</label>
+  <input type="number" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
+
+  <button (click)="convertFoodImpact()">Calculate Food Impact</button>
+</div>
+
+<!-- Food Impact Result -->
+<div *ngIf="foodEmissions !== null">
+  <h3>Food Impact Result</h3>
+  <p><strong>Food Item:</strong> {{ foodItem }}</p>
+  <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
+  <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
+</div>
+<h1>GreenCount Dashboard</h1>
+<p>{{ message }}</p>
+
+<!-- Action Buttons -->
+<div>
+  <button (click)="fetchData()">Fetch Data</button>
+  <button (click)="summarizeData()">Summarize Metric</button>
+</div>
+
+<!-- Loading Indicator -->
+<div *ngIf="isLoading" style="color: blue;">Loading...</div>
+
+<!-- Data Table -->
+<div *ngIf="data && data.length > 0">
+  <h2>Data Table</h2>
+  <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{ item.Metric }}</td>
+        <td>{{ item.Unit }}</td>
+        <td>{{ item.Value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Data Form -->
+<div>
+  <h2>Add New Data</h2>
+  <label>Metric:</label>
+  <input type="text" [(ngModel)]="metric" placeholder="Enter metric (e.g., Electricity)" />
+  <label>Unit:</label>
+  <input type="text" [(ngModel)]="unit" placeholder="Enter unit (e.g., kWh)" />
+  <label>Value:</label>
+  <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
+  <button (click)="addData()">Submit</button>
+</div>
+
+<!-- Convert Data Form -->
+<div>
+  <h2>Convert Data</h2>
+  <label>Metric:</label>
+  <input type="text" [(ngModel)]="conversionMetric" placeholder="Enter metric (e.g., Electricity)" />
+
+  <label>Value:</label>
+  <input type="number" [(ngModel)]="conversionValue" placeholder="Enter value to convert" />
+
+  <label>Target Unit:</label>
+  <input type="text" [(ngModel)]="targetUnit" placeholder="Enter target unit (e.g., MWh)" />
+
+  <button (click)="convertData()">Convert</button>
+</div>
 
 <!-- Conversion Result -->
 <div *ngIf="convertedData">
@@ -67,3 +161,30 @@
   <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
   <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
 </div>
+
+<!-- Energy Emissions -->
+<div *ngIf="energyEmissions !== null">
+  <h3>Energy Impact Result</h3>
+  <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
+</div>
+
+<!-- Food Impact Form -->
+<div>
+  <h2>Calculate Food Impact</h2>
+  <label>Food Item:</label>
+  <input type="text" [(ngModel)]="foodItem" placeholder="Enter food item (e.g., beef)" />
+
+  <label>Weight (kg):</label>
+  <input type="number" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
+
+  <button (click)="convertFoodImpact()">Calculate Food Impact</button>
+</div>
+
+<!-- Food Impact Result -->
+<div *ngIf="foodEmissions !== null">
+  <h3>Food Impact Result</h3>
+  <p><strong>Food Item:</strong> {{ foodItem }}</p>
+  <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
+  <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
+</div>
+

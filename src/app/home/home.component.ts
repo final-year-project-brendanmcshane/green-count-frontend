@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   foodItem: string = '';   // Declare foodItem
   foodWeight: number = 0;  // Declare foodWeight
   foodEmissions: number | null = null;  // Declare foodEmissions
+  energyEmissions: number | null = null; // Declare energyEmissions
 
   constructor(private http: HttpClient) {}
 
@@ -96,23 +97,39 @@ export class HomeComponent implements OnInit {
     }
   
     const payload = {
-      Metric: this.conversionMetric.trim(),
+      Metric: this.conversionMetric.trim().toLowerCase(),  // Normalize to lowercase
       Value: this.conversionValue,
       TargetUnit: this.targetUnit.trim()
     };
   
-    console.log('Payload sent to backend:', payload); // Log payload here
+    console.log('Payload sent to backend:', payload);
   
     this.http.post<any>('http://127.0.0.1:5000/convert', payload).subscribe(
       response => {
         console.log('Conversion successful:', response);
+  
+        // Log the entire response to check if emissions are included
+        console.log('Full response:', response);
+  
+        // If Emissions is available in the response, store it
+        if (response && response.Emissions !== undefined) {
+          this.energyEmissions = response.Emissions;  // Store the energy-related emissions
+          console.log('Energy emissions:', this.energyEmissions); // Log emissions to verify
+        } else {
+          console.error('Emissions data is missing in the response.');
+        }
+  
+        // Store other data as well
         this.convertedData = response;
       },
       error => {
-        console.error('Error converting data:', error); // Log error response
+        console.error('Error converting data:', error);
       }
     );
   }
+  
+  
+  
 
   convertFoodImpact(): void {
     const payload = {
