@@ -148,6 +148,31 @@ export class HomeComponent implements OnInit {
     );
   }
   
+
+  calculateEmissions(): void {
+    if (!this.conversionMetric || this.conversionValue === null || this.conversionValue <= 0) {
+      alert('Please provide valid Metric and Value (greater than 0).');
+      return;
+    }
+  
+    const payload = {
+      Metric: this.conversionMetric.trim(),
+      Value: this.conversionValue
+    };
+  
+    console.log('Payload sent to backend:', payload);
+  
+    this.http.post<any>('http://127.0.0.1:5000/convert', payload).subscribe(
+      response => {
+        console.log('Emissions calculation successful:', response);
+        this.energyEmissions = response.Emissions; // Store the calculated emissions
+      },
+      error => {
+        console.error('Error calculating emissions:', error);
+      }
+    );
+  }
+  
   
   
   
