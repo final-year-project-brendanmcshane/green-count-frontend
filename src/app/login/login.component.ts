@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
-// Add interfaces for response types
 interface AuthResponse {
   session?: {
     access_token: string;
-    // Add other session properties if needed
   };
   user?: {
     id: string;
@@ -16,6 +16,8 @@ interface AuthResponse {
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="login-container">
       <h2>Login</h2>
