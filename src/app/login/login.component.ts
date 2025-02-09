@@ -50,8 +50,8 @@ export class LoginComponent {
         if (response?.access_token) {
           this.authService.setSession(response.access_token);
 
-          // Ensure valid navigation
-          const targetRoute = this.router.config.some(route => route.path === 'dashboard') ? '/dashboard' : '/';
+          // Redirect to 'home' if it exists, otherwise go to '/'
+          const targetRoute = this.router.config.some(route => route.path === 'home') ? '/home' : '/';
           this.router.navigate([targetRoute]);
         } else {
           console.warn("Login response is missing access_token.");
