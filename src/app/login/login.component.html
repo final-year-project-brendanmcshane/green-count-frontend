@@ -1,1 +1,13 @@
-<p>login works!</p>
+<div class="login-container">
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (submit)="onSubmit()">
+      <div>
+        <input type="email" [formControl]="email" placeholder="Email">
+      </div>
+      <div>
+        <input type="password" [formControl]="password" placeholder="Password">
+      </div>
+      <button type="submit">Login</button>
+      <button type="button" (click)="onSignup()">Sign Up</button>
+    </form>
+  </div>
