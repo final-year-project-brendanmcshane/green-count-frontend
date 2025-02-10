@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EmissionsService } from '../services/emissions.service';
+import { AuthService } from '../services/auth.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -26,8 +29,13 @@ export class HomeComponent implements OnInit {
   foodWeight: number = 0;  // Declare foodWeight
   foodEmissions: number | null = null;  // Declare foodEmissions
   energyEmissions: number | null = null; // Declare energyEmissions
+  userEmissions: any[] = [];
+  newEmission: any = { metric: '', unit: '', value: null };  // For new emission data
+  private apiUrl: string = 'http://127.0.0.1:5000';  // Define apiUrl here
 
-  constructor(private http: HttpClient) {}
+
+
+  constructor(private http: HttpClient, private emissionsService: EmissionsService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.http.get<any>('http://127.0.0.1:5000/').subscribe(data => {
@@ -172,6 +180,61 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+  loadUserEmissions(): void {
+    this.emissionsService.getUserEmissions().subscribe({
+      next: (data) => {
+        console.log('User emissions loaded:', data);
+        this.userEmissions = Array.isArray(data) ? data : [];
+      },
+      error: (error) => {
+        console.error('Error fetching user emissions:', error);
+      }
+    });
+  }
+  
+  
+  addEmission(): void {
+    // Validate if required fields are provided
+    if (!this.newEmission.metric || !this.newEmission.unit || this.newEmission.value === null || this.newEmission.value <= 0) {
+      alert('Please provide valid Metric, Unit, and Value.');
+      return;
+    }
+  
+    // Prepare the emission data object to send
+    const emissionData = {
+      Metric: this.newEmission.metric,
+      Unit: this.newEmission.unit,
+      Value: this.newEmission.value
+    };
+  
+    console.log('Sending emission data:', emissionData);  // Debug: Check the data being sent
+  
+    // Get the token from the AuthService
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error("No token found!");
+      return;
+    }
+  
+    // Set Authorization header with the Bearer token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    // Send the emission data to the backend
+    this.http.post<any>(`${this.apiUrl}/add-user-emission`, emissionData, { headers }).subscribe(
+      response => {
+        console.log('Emission added successfully:', response);
+        this.loadUserEmissions();  // Reload the emissions after adding the new one
+      },
+      error => {
+        console.error('Error adding emission:', error);
+      }
+    );
+  }
+  
+  
+  
+  
   
   
   
