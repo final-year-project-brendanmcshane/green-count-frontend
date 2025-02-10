@@ -5,11 +5,14 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 interface AuthResponse {
-  access_token?: string;
-  user?: {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  user: {
     id: string;
     email: string;
-  };
+    role: string;
+  }
 }
 
 @Component({
@@ -45,24 +48,19 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.email, this.password).subscribe({
       next: (response: AuthResponse) => {
-        console.log("Login response:", response);
-
-        if (response?.access_token) {
-          this.authService.setSession(response.access_token);
-
-          // Redirect to 'home' if it exists, otherwise go to '/'
-          const targetRoute = this.router.config.some(route => route.path === 'home') ? '/home' : '/';
-          this.router.navigate([targetRoute]);
-        } else {
-          console.warn("Login response is missing access_token.");
+        if (response.access_token) {
+          this.authService.setUserSession(
+            response.access_token,
+            response.user.id
+          );
+          this.router.navigate(['/home']);
         }
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Login failed:', error);
-        alert("Login failed. Please check your email and password.");
       }
     });
-  }
+}
 
   onSignup(): void {
     this.authService.signup(this.email, this.password).subscribe({
