@@ -152,36 +152,80 @@
 
 
 <!-- Add Emission Form -->
+<!-- Add Emission Form -->
 <div>
   <h2>Add Emission</h2>
-  <label>Metric:</label>
-  <input type="text" [(ngModel)]="newEmission.metric" placeholder="Enter Metric" />
+  
+  <label>Category:</label>
+  <select [(ngModel)]="newEmission.category">
+    <option value="Car">Car</option>
+    <option value="Transport">Transport</option>
+    <option value="Energy">Energy</option>
+    <option value="Working">Working</option>
+    <option value="Accommodation">Accommodation</option>
+  </select>
 
-  <label>Unit:</label>
-  <input type="text" [(ngModel)]="newEmission.unit" placeholder="Enter Unit" />
+  <label>Type:</label>
+  <select [(ngModel)]="newEmission.type">
+    <!-- Car options -->
+    @if (newEmission.category === 'Car') {
+      <option value="Diesel">Diesel</option>
+      <option value="Petrol">Petrol</option>
+      <option value="Hybrid">Hybrid</option>
+    }
+    <!-- Transport options -->
+    @if (newEmission.category === 'Transport') {
+      <option value="Taxi">Taxi</option>
+      <option value="Bus">Bus</option>
+      <option value="Rail">Rail</option>
+      <option value="Flight">Flight</option>
+    }
+    <!-- Energy options -->
+    @if (newEmission.category === 'Energy') {
+      <option value="Electricity">Electricity</option>
+    }
+    <!-- Working options -->
+    @if (newEmission.category === 'Working') {
+      <option value="Office">Office</option>
+      <option value="Home">Home</option>
+    }
+    <!-- Accommodation options -->
+    @if (newEmission.category === 'Accommodation') {
+      <option value="Hotel-UK">Hotel-UK</option>
+      <option value="Hotel-London">Hotel-London</option>
+    }
+  </select>
 
   <label>Value:</label>
   <input type="number" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
 
   <button (click)="addEmission()">Add Emission</button>
-
 </div>
 
-
-<!-- Show when there are user emissions -->
-<div *ngIf="userEmissions.length > 0">
-  <h3>User Emissions</h3>
-  <ul>
-    <li *ngFor="let emission of userEmissions">
-      {{ emission.metric }}: {{ emission.value }} {{ emission.unit }}
-    </li>
-  </ul>
-</div>
-
-<!-- Show when there are no user emissions -->
-<div *ngIf="userEmissions.length === 0">
-  <p>No emissions data available for this user.</p>
-</div>
-
-
-
+<!-- Show Emissions Table -->
+@if (userEmissions.length > 0) {
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Unit</th>
+        <th>Emissions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (emission of userEmissions; track emission) {
+        <tr>
+          <td>{{ emission.category }}</td>
+          <td>{{ emission.type }}</td>
+          <td>{{ emission.value }}</td>
+          <td>{{ emission.unit }}</td>
+          <td>{{ emission.emissions }} kg CO2</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>No emissions data found.</p>
+}

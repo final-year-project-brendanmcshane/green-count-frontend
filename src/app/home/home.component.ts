@@ -193,44 +193,42 @@ export class HomeComponent implements OnInit {
     });
   }
   
-  
   addEmission(): void {
-    // Validate if required fields are provided
-    if (!this.newEmission.metric || !this.newEmission.unit || this.newEmission.value === null || this.newEmission.value <= 0) {
-      alert('Please provide valid Metric, Unit, and Value.');
-      return;
+    console.log('Current newEmission state:', this.newEmission); // Debug line
+
+    // Validate inputs
+    if (!this.newEmission.category || 
+        !this.newEmission.type || 
+        !this.newEmission.value || 
+        this.newEmission.value <= 0) {
+        alert(`Please provide valid data:
+            Category: ${this.newEmission.category}
+            Type: ${this.newEmission.type}
+            Value: ${this.newEmission.value}`);
+        return;
     }
-  
-    // Prepare the emission data object to send
+
     const emissionData = {
-      Metric: this.newEmission.metric,
-      Unit: this.newEmission.unit,
-      Value: this.newEmission.value
+        category: this.newEmission.category,
+        type: this.newEmission.type,
+        value: this.newEmission.value
     };
-  
-    console.log('Sending emission data:', emissionData);  // Debug: Check the data being sent
-  
-    // Get the token from the AuthService
-    const token = this.authService.getToken();
-    if (!token) {
-      console.error("No token found!");
-      return;
-    }
-  
-    // Set Authorization header with the Bearer token
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
-    // Send the emission data to the backend
-    this.http.post<any>(`${this.apiUrl}/add-user-emission`, emissionData, { headers }).subscribe(
-      response => {
-        console.log('Emission added successfully:', response);
-        this.loadUserEmissions();  // Reload the emissions after adding the new one
-      },
-      error => {
-        console.error('Error adding emission:', error);
-      }
-    );
-  }
+
+    console.log('Sending emission data:', emissionData); // Debug line
+
+    this.emissionsService.addEmission(emissionData).subscribe({
+        next: (response) => {
+            console.log('Emission added successfully:', response);
+            this.loadUserEmissions();
+            // Reset form
+            this.newEmission = { category: '', type: '', value: null };
+        },
+        error: (error) => {
+            console.error('Error adding emission:', error);
+            alert('Error adding emission: ' + error.message);
+        }
+    });
+}
   
   
   
