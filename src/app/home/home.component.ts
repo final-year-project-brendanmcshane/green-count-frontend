@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { EmissionsService } from '../services/emissions.service';
 import { AuthService } from '../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
+import { EmissionChartComponent } from '../emission-chart/emission-chart.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EmissionChartComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
