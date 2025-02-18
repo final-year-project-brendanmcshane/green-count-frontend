@@ -6,6 +6,7 @@ import { EmissionsService } from '../services/emissions.service';
 import { AuthService } from '../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { EmissionChartComponent } from '../emission-chart/emission-chart.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +37,7 @@ export class HomeComponent implements OnInit {
 
 
 
-  constructor(private http: HttpClient, private emissionsService: EmissionsService, private authService: AuthService) {}
+  constructor(private http: HttpClient, private emissionsService: EmissionsService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.http.get<any>('http://127.0.0.1:5000/').subscribe(data => {
@@ -229,7 +230,13 @@ export class HomeComponent implements OnInit {
             alert('Error adding emission: ' + error.message);
         }
     });
-}
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']); // Redirect to login page
+  }
+  
   
   
   
