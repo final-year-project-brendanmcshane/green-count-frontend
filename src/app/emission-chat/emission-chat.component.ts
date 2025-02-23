@@ -1,33 +1,40 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-emission-chat',
   standalone: true,
-  imports: [FormsModule], // Only needed for ngModel
+  imports: [CommonModule, FormsModule], // ✅ Imports FormsModule for ngModel
   templateUrl: './emission-chat.component.html',
-  styleUrls: ['./emission-chat.component.css']
+  styleUrl: './emission-chat.component.css'
 })
 export class EmissionChatComponent {
+  messages: { sender: string; text: string }[] = [];
   userMessage: string = '';
-  aiResponse: string | null = null;
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(): void {
-    if (!this.userMessage.trim()) return; // Prevent empty messages
+  sendMessage() {
+    if (!this.userMessage.trim()) return; // Prevents empty messages
 
-    this.http.post<{ response: string }>('http://127.0.0.1:5000/chat', { message: this.userMessage })
+    const userText = this.userMessage.trim();
+    this.messages.push({ sender: 'user', text: userText });
+    this.userMessage = '';
+
+    this.http.post<{ response: string }>('http://127.0.0.1:5000/chat', { message: userText })
       .subscribe({
         next: (response) => {
-          this.aiResponse = response.response;
-          this.userMessage = ''; // Clear input after sending
+          this.messages.push({ sender: 'ai', text: response.response });
         },
         error: (error) => {
-          console.error('Error:', error);
-          this.aiResponse = 'Error getting response from AI.';
+          console.error('Chat error:', error);
         }
       });
+  }
+
+  trackByFn(index: number, item: any) {
+    return index;
   }
 }

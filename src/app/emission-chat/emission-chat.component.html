@@ -1,11 +1,17 @@
 <div class="chat-container">
-    <h2>Ask AI About Carbon Emissions</h2>
+    <h2>Emission Chat Assistant</h2>
   
-    <input [(ngModel)]="userMessage" placeholder="Type your question..." />
-    <button (click)="sendMessage()">Ask AI</button>
+    <div class="chat-box">
+      <div *ngFor="let msg of messages; trackBy: trackByFn">
+        <div [ngClass]="msg.sender === 'user' ? 'user-message' : 'ai-message'">
+          <strong>{{ msg.sender === 'user' ? 'You' : 'AI' }}:</strong> {{ msg.text }}
+        </div>
+      </div>
+    </div>
   
-    @if (aiResponse) {
-      <p><strong>AI:</strong> {{ aiResponse }}</p>
-    }
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="userMessage" placeholder="Ask about your emissions..." (keyup.enter)="sendMessage()" />
+      <button (click)="sendMessage()">Send</button>
+    </div>
   </div>
   
