@@ -1,0 +1,11 @@
+<div class="chat-container">
+    <h2>Ask AI About Carbon Emissions</h2>
+  
+    <input [(ngModel)]="userMessage" placeholder="Type your question..." />
+    <button (click)="sendMessage()">Ask AI</button>
+  
+    @if (aiResponse) {
+      <p><strong>AI:</strong> {{ aiResponse }}</p>
+    }
+  </div>
+  
