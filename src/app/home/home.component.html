@@ -2,16 +2,16 @@
 <p>{{ message }}</p>
 
 <!-- Action Buttons -->
-<div>
+<!-- <div>
   <button (click)="fetchData()">Fetch Data</button>
   <button (click)="summarizeData()">Summarize Metric</button>
-</div>
+</div> -->
 
 <!-- Loading Indicator -->
 <div *ngIf="isLoading" style="color: blue;">Loading...</div>
 
 <!-- Data Table -->
-<div *ngIf="data && data.length > 0">
+<!-- <div *ngIf="data && data.length > 0">
   <h2>Data Table</h2>
   <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
     <thead>
@@ -29,10 +29,10 @@
       </tr>
     </tbody>
   </table>
-</div>
+</div> -->
 
 <!-- Add Data Form -->
-<div>
+<!-- <div>
   <h2>Add New Data</h2>
   <label>Metric:</label>
   <select [(ngModel)]="metric">
@@ -53,10 +53,10 @@
   <label>Value:</label>
   <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
   <button (click)="addData()">Submit</button>
-</div>
+</div> -->
 
 <!-- Convert Data Form -->
-<div>
+<!-- <div>
   <h2>Convert Data</h2>
   <label>Metric:</label>
   <select [(ngModel)]="conversionMetric">
@@ -79,16 +79,16 @@
   </select>
 
   <button (click)="convertData()">Convert</button>
-</div>
+</div> -->
 
 <!-- Conversion Result -->
-<div *ngIf="convertedData">
+<!-- <div *ngIf="convertedData">
   <h3>Conversion Result</h3>
   <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
   <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
   <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
   <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
-</div>
+</div> -->
 
 <!-- Energy Emissions -->
 <div *ngIf="energyEmissions !== null">
