@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-emission-chat',
@@ -14,7 +15,7 @@ export class EmissionChatComponent {
   messages: { sender: string; text: string }[] = [];
   userMessage: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   sendMessage() {
     if (!this.userMessage.trim()) return; // Prevents empty messages
@@ -36,5 +37,9 @@ export class EmissionChatComponent {
 
   trackByFn(index: number, item: any) {
     return index;
+  }
+
+  goHome(): void {
+    this.router.navigate(['/home']);
   }
 }
