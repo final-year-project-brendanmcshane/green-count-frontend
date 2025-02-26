@@ -1,6 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-daily-emissions',
@@ -33,10 +34,15 @@ import { NgFor, NgIf } from '@angular/common';
 
     <button (click)="calculateEmissions()">Calculate</button>
     <h3>Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
+    <br><br>
+    <button (click)="goHome()">Back to Home</button>
   `,
   styles: []
 })
 export class DailyEmissionsComponent {
+
+  constructor(private router: Router) {}
+
   vehicleTypes = ['diesel', 'petrol', 'hybrid', 'taxi', 'bus', 'rail', 'flight', 'motorbike'];
   foodTypes = ['beef', 'chicken', 'vegetables', 'pork', 'dairy'];
 
@@ -82,6 +88,9 @@ export class DailyEmissionsComponent {
 
   calculateEmissions() {
     console.log('Total Emissions:', this.totalEmissions());
+  }
+  goHome(): void {
+    this.router.navigate(['/home']);
   }
 
   totalEmissions = computed(() => {
