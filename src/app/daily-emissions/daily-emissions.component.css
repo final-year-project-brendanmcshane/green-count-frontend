@@ -1,0 +1,14 @@
+h2 {
+    text-align: center;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  input[type="range"], select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
