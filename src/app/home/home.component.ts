@@ -236,6 +236,10 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/chat']);
   }
 
+  goToDailyEmissions() {
+    this.router.navigate(['/daily-emissions']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']); // Redirect to login page
