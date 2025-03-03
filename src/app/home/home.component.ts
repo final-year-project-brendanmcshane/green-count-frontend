@@ -139,6 +139,11 @@ export class HomeComponent implements OnInit {
   }
   
   
+  // Rough 7 kg/day => 210 kg/month => ~2.5 tonnes/year
+  recommendedDailyEmissions = 7;
+  recommendedMonthlyEmissions = this.recommendedDailyEmissions * 30;
+  recommendedYearlyEmissions = this.recommendedDailyEmissions * 365; // ~2555 kg/year
+
   
 
   convertFoodImpact(): void {

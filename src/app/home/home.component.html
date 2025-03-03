@@ -11,6 +11,24 @@
   footer .text-muted {
     color: #555 !important;
   }
+  /* Hero section background image and styling */
+  .hero-section {
+    background: url('https://via.placeholder.com/1600x600?text=GreenCount+Hero') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 4rem 2rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .hero-section .btn-hero {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+  /* Example for a subtle scale on hover for the stats cards */
+  .stats-card:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+  }
 </style>
 
 <!-- Start of GreenCount Home Component -->
@@ -63,11 +81,57 @@
   </div>
 </nav>
 
+<!-- Hero Section -->
 <div class="container mt-4">
+  <div class="hero-section mb-4">
+    <h1 class="display-4 fw-bold">Welcome to GreenCount</h1>
+    <p class="fs-5">
+      Monitor your carbon footprint and take actionable steps to reduce it.
+    </p>
+    <button class="btn btn-light btn-hero" (click)="goToDailyEmissions()">
+      Calculate Your Daily Emissions
+    </button>
+  </div>
+</div>
 
+<div class="container">
   <h1 class="mb-4 text-center">GreenCount Dashboard</h1>
   <p class="text-center">{{ message }}</p>
 
+ <!-- Example Row of Stats Cards (Recommended Emissions) -->
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card text-center stats-card">
+      <div class="card-body">
+        <h5 class="card-title">Recommended Daily</h5>
+        <p class="card-text fs-4">{{ recommendedDailyEmissions }} kg CO₂</p>
+        <p class="text-muted">Guideline for net-zero goals</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card text-center stats-card">
+      <div class="card-body">
+        <h5 class="card-title">Recommended Monthly</h5>
+        <p class="card-text fs-4">{{ recommendedMonthlyEmissions }} kg CO₂</p>
+        <p class="text-muted">(~{{ recommendedDailyEmissions }} kg/day)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card text-center stats-card">
+      <div class="card-body">
+        <h5 class="card-title">Yearly Budget</h5>
+        <p class="card-text fs-4">{{ recommendedYearlyEmissions | number:'1.0-0' }} kg CO₂</p>
+        <p class="text-muted">Approx. based on UK net-zero targets</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
   <!-- Action Buttons -->
   <!-- <div>
     <button (click)="fetchData()">Fetch Data</button>
@@ -89,7 +153,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of data">
+        <tr *ngFor=\"let item of data\">
           <td>{{ item.Metric }}</td>
           <td>{{ item.Unit }}</td>
           <td>{{ item.Value }}</td>
@@ -200,6 +264,26 @@
     <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
     <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
   </div>
+
+  <!-- Example button for modals, if needed
+       <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+         Add Data via Modal
+       </button>
+
+       <div class="modal fade" id="exampleModal" tabindex="-1">
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title">Add Data</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+             </div>
+             <div class="modal-body">
+               <!-- modal form can go here --
+             </div>
+           </div>
+         </div>
+       </div>
+  -->
 
   <button class="btn btn-info mt-3" (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
   <br><br>
