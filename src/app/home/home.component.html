@@ -1,14 +1,68 @@
+<!-- Overriding default Bootstrap color -->
+<style>
+  :root {
+    /* Setting primary color to a custom green */
+    --bs-primary: #4caf50;
+  }
+  .card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  footer .text-muted {
+    color: #555 !important;
+  }
+</style>
+
 <!-- Start of GreenCount Home Component -->
 
-<!-- Added a professional Navbar with Bootstrap -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">GreenCount</a>
-    <!-- You can add a toggler and Nav items here if needed -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasNav"
+      aria-controls="offcanvasNav"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="offcanvas offcanvas-end text-bg-dark"
+      tabindex="-1"
+      id="offcanvasNav"
+      aria-labelledby="offcanvasNavLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavLabel">GreenCount Menu</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <!-- <div class="offcanvas-body">
+        <ul class="navbar-nav flex-column">
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="#">Home</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="#">Emissions</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="#">Analytics</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="#">Settings</a>
+          </li>
+        </ul>
+      </div> -->
+    </div>
   </div>
 </nav>
 
-<!-- Wrapped everything in a container for proper Bootstrap layout -->
 <div class="container mt-4">
 
   <h1 class="mb-4 text-center">GreenCount Dashboard</h1>
@@ -44,8 +98,9 @@
     </table>
   </div> -->
 
-  <!-- Add Data Form -->
-  <!-- <div>
+  <!-- Add Data Form (Commented Out) -->
+  <!--
+  <div>
     <h2>Add New Data</h2>
     <label>Metric:</label>
     <select [(ngModel)]="metric">
@@ -66,10 +121,12 @@
     <label>Value:</label>
     <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
     <button (click)="addData()">Submit</button>
-  </div> -->
+  </div>
+  -->
 
-  <!-- Convert Data Form -->
-  <!-- <div>
+  <!-- Convert Data Form (Commented Out) -->
+  <!--
+  <div>
     <h2>Convert Data</h2>
     <label>Metric:</label>
     <select [(ngModel)]="conversionMetric">
@@ -92,34 +149,31 @@
     </select>
 
     <button (click)="convertData()">Convert</button>
-  </div> -->
+  </div>
 
-  <!-- Conversion Result -->
-  <!-- <div *ngIf="convertedData">
+  <div *ngIf="convertedData">
     <h3>Conversion Result</h3>
     <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
     <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
     <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
     <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
-  </div> -->
+  </div>
+  -->
 
-  <!-- Card for Energy Emissions -->
   <div class="card mb-4">
     <div class="card-header">
-      <h3>Energy Impact</h3>
+      <h3>Energy Impact Result</h3>
     </div>
     <div class="card-body" *ngIf="energyEmissions !== null">
       <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
     </div>
   </div>
 
-  <!-- Card for Food Impact Form -->
   <div class="card mb-4">
     <div class="card-header">
       <h3>Calculate Food Impact</h3>
     </div>
     <div class="card-body">
-      <!-- Using .row and .col for layout -->
       <div class="row g-3 align-items-center">
         <div class="col-md-6">
           <label class="form-label">Food Item:</label>
@@ -140,7 +194,6 @@
     </div>
   </div>
 
-  <!-- Food Impact Result -->
   <div *ngIf="foodEmissions !== null" class="alert alert-info">
     <h3>Food Impact Result</h3>
     <p><strong>Food Item:</strong> {{ foodItem }}</p>
@@ -148,13 +201,11 @@
     <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
   </div>
 
-  <!-- Buttons (styled with Bootstrap classes) -->
   <button class="btn btn-info mt-3" (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
   <br><br>
-  <button class="btn btn-warning" (click)="goToDailyEmissions()">Calculate Daily Emissions</button>
+  <button class="btn btn-warning" (click)="goToDailyEmissions()">Calculate Daily Emissions</button><br>
   <button class="btn btn-primary mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
 
-  <!-- Conditionally displayed table of userEmissions -->
   @if (userEmissions.length > 0) 
   {
     <table class="table table-bordered mt-3">
@@ -179,14 +230,11 @@
     <p>No emissions data found.</p>
   }
 
-  <!-- Add Emission Form -->
-  <!-- Add Emission Form -->
   <div class="card mt-4">
     <div class="card-header">
       <h3>Add Emission</h3>
     </div>
     <div class="card-body">
-      <!-- We use row/col for a more structured form layout -->
       <div class="row g-3 mb-3">
         <div class="col-md-4">
           <label class="form-label">Category:</label>
@@ -232,7 +280,12 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">Value:</label>
-          <input type="number" class="form-control" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="newEmission.value"
+            placeholder="Enter Value"
+          />
         </div>
       </div>
       <button class="btn btn-primary" (click)="addEmission()">Add Emission</button>
@@ -241,7 +294,6 @@
 
   <app-emission-chart></app-emission-chart>
 
-  <!-- Show Emissions Table -->
   @if (userEmissions.length > 0) {
     <table class="table table-striped table-bordered mt-3">
       <thead>
@@ -270,12 +322,12 @@
   }
 
   <button class="btn btn-danger mt-3" (click)="logout()">Sign Out</button>
-</div>
-<!-- End of GreenCount Home Component -->
 
-<!-- A simple footer for a more professional look -->
-<footer class="bg-light text-center py-3 mt-5">
+</div>
+
+<footer class="bg-light text-center text-muted py-3 mt-5">
   <div class="container">
-    <small class="text-muted">© 2025 GreenCount. All Rights Reserved.</small>
+    <small>© 2025 GreenCount. All Rights Reserved.</small>
   </div>
 </footer>
+<!-- End of GreenCount Home Component -->
