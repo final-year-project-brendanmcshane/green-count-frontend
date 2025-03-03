@@ -1,241 +1,251 @@
-<h1>GreenCount Dashboard</h1>
-<p>{{ message }}</p>
+<!-- Start of GreenCount Home Component -->
 
-<!-- Action Buttons -->
-<!-- <div>
-  <button (click)="fetchData()">Fetch Data</button>
-  <button (click)="summarizeData()">Summarize Metric</button>
-</div> -->
+<!-- Added 'container mt-4' class here for Bootstrap layout -->
+<div class="container mt-4">
 
-<!-- Loading Indicator -->
-<div *ngIf="isLoading" style="color: blue;">Loading...</div>
+  <h1>GreenCount Dashboard</h1>
+  <p>{{ message }}</p>
 
-<!-- Data Table -->
-<!-- <div *ngIf="data && data.length > 0">
-  <h2>Data Table</h2>
-  <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
-    <thead>
-      <tr>
-        <th>Metric</th>
-        <th>Unit</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of data">
-        <td>{{ item.Metric }}</td>
-        <td>{{ item.Unit }}</td>
-        <td>{{ item.Value }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
+  <!-- Action Buttons -->
+  <!-- <div>
+    <button (click)="fetchData()">Fetch Data</button>
+    <button (click)="summarizeData()">Summarize Metric</button>
+  </div> -->
 
-<!-- Add Data Form -->
-<!-- <div>
-  <h2>Add New Data</h2>
-  <label>Metric:</label>
-  <select [(ngModel)]="metric">
-    <option value="Electricity">Electricity</option>
-    <option value="Water">Water</option>
-    <option value="Gas">Gas</option>
-  </select>
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" style="color: blue;">Loading...</div>
 
-  <label>Unit:</label>
-  <select [(ngModel)]="unit">
-    <option *ngIf="metric === 'Electricity'" value="kWh">kWh</option>
-    <option *ngIf="metric === 'Electricity'" value="MWh">MWh</option>
-    <option *ngIf="metric !== 'Electricity'" value="liters">Liters</option>
-    <option *ngIf="metric !== 'Electricity'" value="gallons">Gallons</option>
-    <option *ngIf="metric !== 'Electricity'" value="cubic meters">Cubic Meters</option>
-  </select>
-
-  <label>Value:</label>
-  <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
-  <button (click)="addData()">Submit</button>
-</div> -->
-
-<!-- Convert Data Form -->
-<!-- <div>
-  <h2>Convert Data</h2>
-  <label>Metric:</label>
-  <select [(ngModel)]="conversionMetric">
-    <option value="Electricity">Electricity</option>
-    <option value="Water">Water</option>
-    <option value="Gas">Gas</option>
-  </select>
-
-  <label>Value:</label>
-  <input type="number" [(ngModel)]="conversionValue" placeholder="Enter value to convert" />
-
-  <label>Target Unit:</label>
-  <select [(ngModel)]="targetUnit">
-    <option *ngIf="conversionMetric === 'Electricity'" value="kWh">kWh</option>
-    <option *ngIf="conversionMetric === 'Electricity'" value="MWh">MWh</option>
-    <option *ngIf="conversionMetric !== 'Electricity'" value="liters">Liters</option>
-    <option *ngIf="conversionMetric !== 'Electricity'" value="gallons">Gallons</option>
-    <option *ngIf="conversionMetric === 'Gas'" value="cubic meters">Cubic Meters</option>
-    <option *ngIf="conversionMetric === 'Gas'" value="liters">Liters</option>
-  </select>
-
-  <button (click)="convertData()">Convert</button>
-</div> -->
-
-<!-- Conversion Result -->
-<!-- <div *ngIf="convertedData">
-  <h3>Conversion Result</h3>
-  <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
-  <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
-  <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
-  <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
-</div> -->
-
-<!-- Energy Emissions -->
-<div *ngIf="energyEmissions !== null">
-  <h3>Energy Impact Result</h3>
-  <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
-</div>
-
-<!-- Food Impact Form -->
-<div>
-  <h2>Calculate Food Impact</h2>
-  <label>Food Item:</label>
-  <select [(ngModel)]="foodItem">
-    <option value="beef">Beef</option>
-    <option value="chicken">Chicken</option>
-    <option value="pork">Pork</option>
-    <option value="vegetables">Vegetables</option>
-    <option value="dairy">Dairy</option>
-  </select>
-
-  <label>Weight (kg):</label>
-  <input type="number" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
-
-  <button (click)="convertFoodImpact()">Calculate Food Impact</button>
-</div>
-
-<!-- Food Impact Result -->
-<div *ngIf="foodEmissions !== null">
-  <h3>Food Impact Result</h3>
-  <p><strong>Food Item:</strong> {{ foodItem }}</p>
-  <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
-  <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
-</div>
-
-<button (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
-<br>
-<br>
-<button (click)="goToDailyEmissions()">Calculate Daily Emissions</button>
-
-
-
-<button (click)="loadUserEmissions()">Load My Emissions</button>
-
-@if (userEmissions.length > 0) 
-  {
-  <table>
-    <thead>
-      <tr>
-        <th>Metric</th>
-        <th>Unit</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (emission of userEmissions; track emission) {
+  <!-- Data Table -->
+  <!-- <div *ngIf="data && data.length > 0">
+    <h2>Data Table</h2>
+    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
         <tr>
-          <td>{{ emission.metric }}</td>
-          <td>{{ emission.unit }}</td>
-          <td>{{ emission.value }}</td>
+          <th>Metric</th>
+          <th>Unit</th>
+          <th>Value</th>
         </tr>
-      }
-    </tbody>
-  </table>
-} @else {
-  <p>No emissions data found.</p>
-}
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td>{{ item.Metric }}</td>
+          <td>{{ item.Unit }}</td>
+          <td>{{ item.Value }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
 
-
-<!-- Add Emission Form -->
-<!-- Add Emission Form -->
-<div>
-  <h2>Add Emission</h2>
-  
-  <label>Category:</label>
-  <select [(ngModel)]="newEmission.category">
-    <option value="Car">Car</option>
-    <option value="Transport">Transport</option>
-    <option value="Energy">Energy</option>
-    <option value="Working">Working</option>
-    <option value="Accommodation">Accommodation</option>
-  </select>
-
-  <label>Type:</label>
-  <select [(ngModel)]="newEmission.type">
-    <!-- Car options -->
-    @if (newEmission.category === 'Car') {
-      <option value="Diesel">Diesel</option>
-      <option value="Petrol">Petrol</option>
-      <option value="Hybrid">Hybrid</option>
-    }
-    <!-- Transport options -->
-    @if (newEmission.category === 'Transport') {
-      <option value="Taxi">Taxi</option>
-      <option value="Bus">Bus</option>
-      <option value="Rail">Rail</option>
-      <option value="Flight">Flight</option>
-    }
-    <!-- Energy options -->
-    @if (newEmission.category === 'Energy') {
+  <!-- Add Data Form -->
+  <!-- <div>
+    <h2>Add New Data</h2>
+    <label>Metric:</label>
+    <select [(ngModel)]="metric">
       <option value="Electricity">Electricity</option>
-    }
-    <!-- Working options -->
-    @if (newEmission.category === 'Working') {
-      <option value="Office">Office</option>
-      <option value="Home">Home</option>
-    }
-    <!-- Accommodation options -->
-    @if (newEmission.category === 'Accommodation') {
-      <option value="Hotel-UK">Hotel-UK</option>
-      <option value="Hotel-London">Hotel-London</option>
-    }
-  </select>
+      <option value="Water">Water</option>
+      <option value="Gas">Gas</option>
+    </select>
 
-  <label>Value:</label>
-  <input type="number" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
+    <label>Unit:</label>
+    <select [(ngModel)]="unit">
+      <option *ngIf="metric === 'Electricity'" value="kWh">kWh</option>
+      <option *ngIf="metric === 'Electricity'" value="MWh">MWh</option>
+      <option *ngIf="metric !== 'Electricity'" value="liters">Liters</option>
+      <option *ngIf="metric !== 'Electricity'" value="gallons">Gallons</option>
+      <option *ngIf="metric !== 'Electricity'" value="cubic meters">Cubic Meters</option>
+    </select>
 
-  <button (click)="addEmission()">Add Emission</button>
-</div>
+    <label>Value:</label>
+    <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
+    <button (click)="addData()">Submit</button>
+  </div> -->
 
-<app-emission-chart></app-emission-chart>
+  <!-- Convert Data Form -->
+  <!-- <div>
+    <h2>Convert Data</h2>
+    <label>Metric:</label>
+    <select [(ngModel)]="conversionMetric">
+      <option value="Electricity">Electricity</option>
+      <option value="Water">Water</option>
+      <option value="Gas">Gas</option>
+    </select>
 
+    <label>Value:</label>
+    <input type="number" [(ngModel)]="conversionValue" placeholder="Enter value to convert" />
 
-<!-- Show Emissions Table -->
-@if (userEmissions.length > 0) {
-  <table>
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Type</th>
-        <th>Value</th>
-        <th>Unit</th>
-        <th>Emissions</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (emission of userEmissions; track emission) {
+    <label>Target Unit:</label>
+    <select [(ngModel)]="targetUnit">
+      <option *ngIf="conversionMetric === 'Electricity'" value="kWh">kWh</option>
+      <option *ngIf="conversionMetric === 'Electricity'" value="MWh">MWh</option>
+      <option *ngIf="conversionMetric !== 'Electricity'" value="liters">Liters</option>
+      <option *ngIf="conversionMetric !== 'Electricity'" value="gallons">Gallons</option>
+      <option *ngIf="conversionMetric === 'Gas'" value="cubic meters">Cubic Meters</option>
+      <option *ngIf="conversionMetric === 'Gas'" value="liters">Liters</option>
+    </select>
+
+    <button (click)="convertData()">Convert</button>
+  </div> -->
+
+  <!-- Conversion Result -->
+  <!-- <div *ngIf="convertedData">
+    <h3>Conversion Result</h3>
+    <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
+    <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
+    <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
+    <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
+  </div> -->
+
+  <!-- Energy Emissions -->
+  <div *ngIf="energyEmissions !== null">
+    <h3>Energy Impact Result</h3>
+    <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
+  </div>
+
+  <!-- Food Impact Form -->
+  <div>
+    <h2>Calculate Food Impact</h2>
+    <label>Food Item:</label>
+    <select [(ngModel)]="foodItem">
+      <option value="beef">Beef</option>
+      <option value="chicken">Chicken</option>
+      <option value="pork">Pork</option>
+      <option value="vegetables">Vegetables</option>
+      <option value="dairy">Dairy</option>
+    </select>
+
+    <label>Weight (kg):</label>
+    <input type="number" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
+
+    <button (click)="convertFoodImpact()">Calculate Food Impact</button>
+  </div>
+
+  <!-- Food Impact Result -->
+  <div *ngIf="foodEmissions !== null">
+    <h3>Food Impact Result</h3>
+    <p><strong>Food Item:</strong> {{ foodItem }}</p>
+    <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
+    <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
+  </div>
+
+  <!-- Below: classes 'btn', 'btn-info', 'mt-3' from Bootstrap -->
+  <button class="btn btn-info mt-3" (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
+  <br>
+  <br>
+  <!-- Below: class 'btn btn-warning' from Bootstrap -->
+  <button class="btn btn-warning" (click)="goToDailyEmissions()">Calculate Daily Emissions</button>
+
+  <!-- Below: class 'btn btn-primary mt-3' from Bootstrap -->
+  <button class="btn btn-primary mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
+
+  @if (userEmissions.length > 0) 
+    {
+    <!-- Below: class 'table table-bordered mt-3' from Bootstrap -->
+    <table class="table table-bordered mt-3">
+      <thead>
         <tr>
-          <td>{{ emission.category }}</td>
-          <td>{{ emission.type }}</td>
-          <td>{{ emission.value }}</td>
-          <td>{{ emission.unit }}</td>
-          <td>{{ emission.emissions }} kg CO2</td>
+          <th>Metric</th>
+          <th>Unit</th>
+          <th>Value</th>
         </tr>
-      }
-    </tbody>
-  </table>
-} @else {
-  <p>No emissions data found.</p>
-}
+      </thead>
+      <tbody>
+        @for (emission of userEmissions; track emission) {
+          <tr>
+            <td>{{ emission.metric }}</td>
+            <td>{{ emission.unit }}</td>
+            <td>{{ emission.value }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p>No emissions data found.</p>
+  }
 
-<button (click)="logout()">Sign Out</button>
+  <!-- Add Emission Form -->
+  <!-- Add Emission Form -->
+  <div>
+    <h2>Add Emission</h2>
+    
+    <label>Category:</label>
+    <select [(ngModel)]="newEmission.category">
+      <option value="Car">Car</option>
+      <option value="Transport">Transport</option>
+      <option value="Energy">Energy</option>
+      <option value="Working">Working</option>
+      <option value="Accommodation">Accommodation</option>
+    </select>
+
+    <label>Type:</label>
+    <select [(ngModel)]="newEmission.type">
+      <!-- Car options -->
+      @if (newEmission.category === 'Car') {
+        <option value="Diesel">Diesel</option>
+        <option value="Petrol">Petrol</option>
+        <option value="Hybrid">Hybrid</option>
+      }
+      <!-- Transport options -->
+      @if (newEmission.category === 'Transport') {
+        <option value="Taxi">Taxi</option>
+        <option value="Bus">Bus</option>
+        <option value="Rail">Rail</option>
+        <option value="Flight">Flight</option>
+      }
+      <!-- Energy options -->
+      @if (newEmission.category === 'Energy') {
+        <option value="Electricity">Electricity</option>
+      }
+      <!-- Working options -->
+      @if (newEmission.category === 'Working') {
+        <option value="Office">Office</option>
+        <option value="Home">Home</option>
+      }
+      <!-- Accommodation options -->
+      @if (newEmission.category === 'Accommodation') {
+        <option value="Hotel-UK">Hotel-UK</option>
+        <option value="Hotel-London">Hotel-London</option>
+      }
+    </select>
+
+    <label>Value:</label>
+    <input type="number" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
+
+    <button (click)="addEmission()">Add Emission</button>
+  </div>
+
+  <app-emission-chart></app-emission-chart>
+
+  <!-- Show Emissions Table -->
+  @if (userEmissions.length > 0) {
+    <!-- Below: classes 'table table-striped table-bordered mt-3' from Bootstrap -->
+    <table class="table table-striped table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Type</th>
+          <th>Value</th>
+          <th>Unit</th>
+          <th>Emissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (emission of userEmissions; track emission) {
+          <tr>
+            <td>{{ emission.category }}</td>
+            <td>{{ emission.type }}</td>
+            <td>{{ emission.value }}</td>
+            <td>{{ emission.unit }}</td>
+            <td>{{ emission.emissions }} kg CO2</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p>No emissions data found.</p>
+  }
+
+  <!-- Below: classes 'btn btn-danger mt-3' from Bootstrap -->
+  <button class="btn btn-danger mt-3" (click)="logout()">Sign Out</button>
+
+</div>
+<!-- End of GreenCount Home Component -->
