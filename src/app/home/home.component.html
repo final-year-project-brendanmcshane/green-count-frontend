@@ -1,10 +1,18 @@
 <!-- Start of GreenCount Home Component -->
 
-<!-- Added 'container mt-4' class here for Bootstrap layout -->
+<!-- Added a professional Navbar with Bootstrap -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">GreenCount</a>
+    <!-- You can add a toggler and Nav items here if needed -->
+  </div>
+</nav>
+
+<!-- Wrapped everything in a container for proper Bootstrap layout -->
 <div class="container mt-4">
 
-  <h1>GreenCount Dashboard</h1>
-  <p>{{ message }}</p>
+  <h1 class="mb-4 text-center">GreenCount Dashboard</h1>
+  <p class="text-center">{{ message }}</p>
 
   <!-- Action Buttons -->
   <!-- <div>
@@ -95,51 +103,60 @@
     <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
   </div> -->
 
-  <!-- Energy Emissions -->
-  <div *ngIf="energyEmissions !== null">
-    <h3>Energy Impact Result</h3>
-    <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
+  <!-- Card for Energy Emissions -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Energy Impact</h3>
+    </div>
+    <div class="card-body" *ngIf="energyEmissions !== null">
+      <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
+    </div>
   </div>
 
-  <!-- Food Impact Form -->
-  <div>
-    <h2>Calculate Food Impact</h2>
-    <label>Food Item:</label>
-    <select [(ngModel)]="foodItem">
-      <option value="beef">Beef</option>
-      <option value="chicken">Chicken</option>
-      <option value="pork">Pork</option>
-      <option value="vegetables">Vegetables</option>
-      <option value="dairy">Dairy</option>
-    </select>
-
-    <label>Weight (kg):</label>
-    <input type="number" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
-
-    <button (click)="convertFoodImpact()">Calculate Food Impact</button>
+  <!-- Card for Food Impact Form -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Calculate Food Impact</h3>
+    </div>
+    <div class="card-body">
+      <!-- Using .row and .col for layout -->
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          <label class="form-label">Food Item:</label>
+          <select class="form-select" [(ngModel)]="foodItem">
+            <option value="beef">Beef</option>
+            <option value="chicken">Chicken</option>
+            <option value="pork">Pork</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="dairy">Dairy</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Weight (kg):</label>
+          <input type="number" class="form-control" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
+        </div>
+      </div>
+      <button class="btn btn-success mt-3" (click)="convertFoodImpact()">Calculate Food Impact</button>
+    </div>
   </div>
 
   <!-- Food Impact Result -->
-  <div *ngIf="foodEmissions !== null">
+  <div *ngIf="foodEmissions !== null" class="alert alert-info">
     <h3>Food Impact Result</h3>
     <p><strong>Food Item:</strong> {{ foodItem }}</p>
     <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
     <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
   </div>
 
-  <!-- Below: classes 'btn', 'btn-info', 'mt-3' from Bootstrap -->
+  <!-- Buttons (styled with Bootstrap classes) -->
   <button class="btn btn-info mt-3" (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
-  <br>
-  <br>
-  <!-- Below: class 'btn btn-warning' from Bootstrap -->
+  <br><br>
   <button class="btn btn-warning" (click)="goToDailyEmissions()">Calculate Daily Emissions</button>
-
-  <!-- Below: class 'btn btn-primary mt-3' from Bootstrap -->
   <button class="btn btn-primary mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
 
+  <!-- Conditionally displayed table of userEmissions -->
   @if (userEmissions.length > 0) 
-    {
-    <!-- Below: class 'table table-bordered mt-3' from Bootstrap -->
+  {
     <table class="table table-bordered mt-3">
       <thead>
         <tr>
@@ -164,60 +181,68 @@
 
   <!-- Add Emission Form -->
   <!-- Add Emission Form -->
-  <div>
-    <h2>Add Emission</h2>
-    
-    <label>Category:</label>
-    <select [(ngModel)]="newEmission.category">
-      <option value="Car">Car</option>
-      <option value="Transport">Transport</option>
-      <option value="Energy">Energy</option>
-      <option value="Working">Working</option>
-      <option value="Accommodation">Accommodation</option>
-    </select>
-
-    <label>Type:</label>
-    <select [(ngModel)]="newEmission.type">
-      <!-- Car options -->
-      @if (newEmission.category === 'Car') {
-        <option value="Diesel">Diesel</option>
-        <option value="Petrol">Petrol</option>
-        <option value="Hybrid">Hybrid</option>
-      }
-      <!-- Transport options -->
-      @if (newEmission.category === 'Transport') {
-        <option value="Taxi">Taxi</option>
-        <option value="Bus">Bus</option>
-        <option value="Rail">Rail</option>
-        <option value="Flight">Flight</option>
-      }
-      <!-- Energy options -->
-      @if (newEmission.category === 'Energy') {
-        <option value="Electricity">Electricity</option>
-      }
-      <!-- Working options -->
-      @if (newEmission.category === 'Working') {
-        <option value="Office">Office</option>
-        <option value="Home">Home</option>
-      }
-      <!-- Accommodation options -->
-      @if (newEmission.category === 'Accommodation') {
-        <option value="Hotel-UK">Hotel-UK</option>
-        <option value="Hotel-London">Hotel-London</option>
-      }
-    </select>
-
-    <label>Value:</label>
-    <input type="number" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
-
-    <button (click)="addEmission()">Add Emission</button>
+  <div class="card mt-4">
+    <div class="card-header">
+      <h3>Add Emission</h3>
+    </div>
+    <div class="card-body">
+      <!-- We use row/col for a more structured form layout -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <label class="form-label">Category:</label>
+          <select class="form-select" [(ngModel)]="newEmission.category">
+            <option value="Car">Car</option>
+            <option value="Transport">Transport</option>
+            <option value="Energy">Energy</option>
+            <option value="Working">Working</option>
+            <option value="Accommodation">Accommodation</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Type:</label>
+          <select class="form-select" [(ngModel)]="newEmission.type">
+            <!-- Car options -->
+            @if (newEmission.category === 'Car') {
+              <option value="Diesel">Diesel</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Hybrid">Hybrid</option>
+            }
+            <!-- Transport options -->
+            @if (newEmission.category === 'Transport') {
+              <option value="Taxi">Taxi</option>
+              <option value="Bus">Bus</option>
+              <option value="Rail">Rail</option>
+              <option value="Flight">Flight</option>
+            }
+            <!-- Energy options -->
+            @if (newEmission.category === 'Energy') {
+              <option value="Electricity">Electricity</option>
+            }
+            <!-- Working options -->
+            @if (newEmission.category === 'Working') {
+              <option value="Office">Office</option>
+              <option value="Home">Home</option>
+            }
+            <!-- Accommodation options -->
+            @if (newEmission.category === 'Accommodation') {
+              <option value="Hotel-UK">Hotel-UK</option>
+              <option value="Hotel-London">Hotel-London</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Value:</label>
+          <input type="number" class="form-control" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
+        </div>
+      </div>
+      <button class="btn btn-primary" (click)="addEmission()">Add Emission</button>
+    </div>
   </div>
 
   <app-emission-chart></app-emission-chart>
 
   <!-- Show Emissions Table -->
   @if (userEmissions.length > 0) {
-    <!-- Below: classes 'table table-striped table-bordered mt-3' from Bootstrap -->
     <table class="table table-striped table-bordered mt-3">
       <thead>
         <tr>
@@ -244,8 +269,13 @@
     <p>No emissions data found.</p>
   }
 
-  <!-- Below: classes 'btn btn-danger mt-3' from Bootstrap -->
   <button class="btn btn-danger mt-3" (click)="logout()">Sign Out</button>
-
 </div>
 <!-- End of GreenCount Home Component -->
+
+<!-- A simple footer for a more professional look -->
+<footer class="bg-light text-center py-3 mt-5">
+  <div class="container">
+    <small class="text-muted">© 2025 GreenCount. All Rights Reserved.</small>
+  </div>
+</footer>
