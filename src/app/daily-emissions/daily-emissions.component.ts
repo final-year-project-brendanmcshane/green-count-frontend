@@ -8,34 +8,86 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [RouterModule, NgFor, NgIf],
   template: `
-    <h2>Daily Emission Calculator</h2>
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Daily Emission Calculator</h2>
 
-    <label>Select Vehicle Type:</label>
-    <select (change)="updateVehicleType($event)">
-      <option *ngFor="let vType of vehicleTypes" [value]="vType">{{ vType }}</option>
-    </select>
+  <!-- Card to wrap our form inputs -->
+  <div class="card shadow-sm">
+    <div class="card-body">
 
-    <label>Miles Driven:</label>
-    <input type="range" min="0" max="100" [value]="milesDriven()" (input)="updateMilesDriven($event)">
-    <span>{{ milesDriven() }} miles</span>
+      <!-- Vehicle Type -->
+      <div class="mb-3">
+        <label class="form-label">Select Vehicle Type:</label>
+        <select class="form-select w-auto" (change)="updateVehicleType($event)">
+          <option *ngFor="let vType of vehicleTypes" [value]="vType">{{ vType }}</option>
+        </select>
+      </div>
 
-    <label>Hours Worked:</label>
-    <input type="range" min="0" max="24" [value]="hoursWorked()" (input)="updateHoursWorked($event)">
-    <span>{{ hoursWorked() }} hours</span>
+      <!-- Miles Driven -->
+      <div class="mb-3">
+        <label class="form-label">Miles Driven:</label>
+        <input
+          type="range"
+          class="form-range w-50"
+          min="0"
+          max="100"
+          [value]="milesDriven()"
+          (input)="updateMilesDriven($event)"
+        />
+        <span class="ms-2 fw-bold">{{ milesDriven() }} miles</span>
+      </div>
 
-    <label>Select Food Item:</label>
-    <select (change)="updateFoodType($event)">
-      <option *ngFor="let fType of foodTypes" [value]="fType">{{ fType }}</option>
-    </select>
+      <!-- Hours Worked -->
+      <div class="mb-3">
+        <label class="form-label">Hours Worked:</label>
+        <input
+          type="range"
+          class="form-range w-50"
+          min="0"
+          max="24"
+          [value]="hoursWorked()"
+          (input)="updateHoursWorked($event)"
+        />
+        <span class="ms-2 fw-bold">{{ hoursWorked() }} hours</span>
+      </div>
 
-    <label>Food Consumed (kg):</label>
-    <input type="range" min="0" max="5" [value]="foodQuantity()" (input)="updateFoodQuantity($event)">
-    <span>{{ foodQuantity() }} kg</span>
+      <!-- Food Selection -->
+      <div class="mb-3">
+        <label class="form-label">Select Food Item:</label>
+        <select class="form-select w-auto" (change)="updateFoodType($event)">
+          <option *ngFor="let fType of foodTypes" [value]="fType">{{ fType }}</option>
+        </select>
+      </div>
 
-    <button (click)="calculateEmissions()">Calculate</button>
-    <h3>Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
-    <br><br>
-    <button (click)="goHome()">Back to Home</button>
+      <!-- Food Quantity -->
+      <div class="mb-3">
+        <label class="form-label">Food Consumed (kg):</label>
+        <input
+          type="range"
+          class="form-range w-50"
+          min="0"
+          max="5"
+          [value]="foodQuantity()"
+          (input)="updateFoodQuantity($event)"
+        />
+        <span class="ms-2 fw-bold">{{ foodQuantity() }} kg</span>
+      </div>
+
+      <!-- Calculate Button + Result -->
+      <div class="text-center">
+        <button class="btn btn-primary me-3" (click)="calculateEmissions()">Calculate</button>
+        <h3 class="d-inline-block mt-3">Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Back to Home Button -->
+  <div class="text-center mt-4">
+    <button class="btn btn-secondary" (click)="goHome()">Back to Home</button>
+  </div>
+
+</div>
   `,
   styles: []
 })
@@ -89,6 +141,7 @@ export class DailyEmissionsComponent {
   calculateEmissions() {
     console.log('Total Emissions:', this.totalEmissions());
   }
+
   goHome(): void {
     this.router.navigate(['/home']);
   }
