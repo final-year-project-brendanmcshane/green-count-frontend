@@ -20,22 +20,59 @@ interface AuthResponse {
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="login-container">
-      <h2>Login</h2>
-      <form (ngSubmit)="onSubmit()">
-        <div>
-          <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required>
+      <div
+      class="container d-flex align-items-center justify-content-center"
+      style="min-height: 100vh;"
+    >
+      <div class="card shadow" style="max-width: 400px; width: 100%;">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4">Login</h2>
+          <!-- Angular template-driven form -->
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">
+              Login
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-success w-100 mt-2"
+              (click)="onSignup()"
+            >
+              Sign Up
+            </button>
+          </form>
         </div>
-        <div>
-          <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
-        </div>
-        <button type="submit">Login</button>
-        <button type="button" (click)="onSignup()">Sign Up</button>
-      </form>
+      </div>
     </div>
   `,
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent {
   email: string = '';
   password: string = '';

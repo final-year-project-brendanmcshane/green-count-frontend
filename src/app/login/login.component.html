@@ -1,13 +1,45 @@
-<div class="login-container">
-    <h2>Login</h2>
-    <form #loginForm="ngForm" (submit)="onSubmit()">
-      <div>
-        <input type="email" [formControl]="email" placeholder="Email">
-      </div>
-      <div>
-        <input type="password" [formControl]="password" placeholder="Password">
-      </div>
-      <button type="submit">Login</button>
-      <button type="button" (click)="onSignup()">Sign Up</button>
-    </form>
+<div
+  class="container d-flex align-items-center justify-content-center"
+  style="min-height: 100vh;"
+>
+  <div class="card shadow-lg" style="max-width: 400px; width: 100%;">
+    <div class="card-body p-4">
+      <h2 class="text-center mb-4">Login</h2>
+      <!-- Angular form submission -->
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            [formControl]="email"
+            placeholder="Enter your email"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            [formControl]="password"
+            placeholder="Enter your password"
+          />
+        </div>
+        <!-- Login button in green -->
+        <button type="submit" class="btn btn-success w-100">
+          Login
+        </button>
+        <!-- Sign up button outlined in green, placed below the login -->
+        <button
+          type="button"
+          class="btn btn-outline-success w-100 mt-2"
+          (click)="onSignup()"
+        >
+          Sign Up
+        </button>
+      </form>
+    </div>
   </div>
+</div>
