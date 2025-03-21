@@ -3,3 +3,12 @@
 body {
   font-family: 'Manrope', sans-serif;
 }
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.card.dark-mode {
+  background-color: #1e1e1e;
+  color: white;
+}

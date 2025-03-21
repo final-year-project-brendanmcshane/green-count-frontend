@@ -44,6 +44,11 @@ export class HomeComponent implements OnInit {
       this.message = data.message;
     });
     this.fetchData(); // Fetch the initial dataset
+
+    const darkMode = localStorage.getItem('enableDarkMode');
+    if (darkMode === 'true') {
+      document.body.classList.add('dark-mode');
+    }
   }
 
   fetchData(): void {
