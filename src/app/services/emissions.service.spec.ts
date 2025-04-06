@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { EmissionsService, EmissionData } from './emissions.service';
 import { AuthService } from './auth.service';
 
@@ -9,14 +9,12 @@ describe('EmissionsService', () => {
   let mockAuthService: jasmine.SpyObj<AuthService>;
 
   beforeEach(() => {
-    // Create a fake AuthService with just the getToken method
     const authSpy = jasmine.createSpyObj('AuthService', ['getToken']);
 
-    // Set up test environment and provide mocks
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule], // Use the old method for compatibility
       providers: [
         EmissionsService,
-        provideHttpClientTesting(), // replaces the old HttpClientTestingModule
         { provide: AuthService, useValue: authSpy }
       ]
     });
@@ -28,7 +26,7 @@ describe('EmissionsService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify(); // make sure there are no pending HTTP requests
+    httpMock.verify();
   });
 
   it('should be created', () => {
