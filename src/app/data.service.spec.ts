@@ -15,11 +15,12 @@ describe('DataService', () => {
     service = TestBed.inject(DataService);
     httpMock = TestBed.inject(HttpTestingController);
   });
-
+  // Makes sure no unmatched requests are left after each test
   afterEach(() => {
     httpMock.verify();
   });
 
+  // Confirms the service is successfully instantiated
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
@@ -32,7 +33,7 @@ describe('DataService', () => {
     });
 
     const req = httpMock.expectOne('http://127.0.0.1:5000/get');
-    expect(req.request.method).toBe('GET');
+    expect(req.request.method).toBe('GET'); // Ensures the request method is GET
     req.flush(mockData);
   });
 
