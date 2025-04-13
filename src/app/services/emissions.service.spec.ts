@@ -9,10 +9,11 @@ describe('EmissionsService', () => {
   let mockAuthService: jasmine.SpyObj<AuthService>;
 
   beforeEach(() => {
+    // Create a spy for AuthService to mock getToken
     const authSpy = jasmine.createSpyObj('AuthService', ['getToken']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], // Use the old method for compatibility
+      imports: [HttpClientTestingModule],
       providers: [
         EmissionsService,
         { provide: AuthService, useValue: authSpy }
@@ -26,6 +27,7 @@ describe('EmissionsService', () => {
   });
 
   afterEach(() => {
+    // Ensure no outstanding requests remain
     httpMock.verify();
   });
 
@@ -42,6 +44,7 @@ describe('EmissionsService', () => {
 
     service.addEmission(testData).subscribe();
 
+    // Validate request URL, method, headers and body
     const req = httpMock.expectOne('http://localhost:5000/add-user-emission');
     expect(req.request.method).toBe('POST');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mocked-token');
@@ -53,6 +56,7 @@ describe('EmissionsService', () => {
   it('should send a GET request to get-user-emissions with auth header', () => {
     service.getUserEmissions().subscribe();
 
+    // Check GET request and that auth header is set
     const req = httpMock.expectOne('http://localhost:5000/get-user-emissions');
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mocked-token');
