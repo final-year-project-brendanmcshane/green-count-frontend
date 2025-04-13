@@ -22,5 +22,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm run test-headless
+      - name: Run Angular tests headlessly
+        run: npx ng test --watch=false --browsers=ChromeHeadless
