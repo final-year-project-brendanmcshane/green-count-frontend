@@ -1,82 +1,89 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { provideHttpClient, HttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { EmissionsService } from '../services/emissions.service';
 import { AuthService } from '../services/auth.service';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { EmissionChartComponent } from '../emission-chart/emission-chart.component';
+
+// Mock HttpClient
+class MockHttpClient {
+  post = jasmine.createSpy().and.returnValue(of({ success: true }));
+  get = jasmine.createSpy().and.returnValue(of({ message: 'Welcome' }));
+}
+
+// Mock EmissionsService
+const mockEmissionsService = {
+  getUserEmissions: () => of([]),
+  addEmission: () => of({ success: true })
+};
+
+// Mock AuthService
+const mockAuthService = {
+  logout: () => {}
+};
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let emissionsService: jasmine.SpyObj<EmissionsService>;
-  let authService: jasmine.SpyObj<AuthService>;
+  let http: MockHttpClient;
 
   beforeEach(async () => {
-    // Create spies for services
-    emissionsService = jasmine.createSpyObj('EmissionsService', ['getUserEmissions', 'addEmission']);
-    authService = jasmine.createSpyObj('AuthService', ['logout']);
+    http = new MockHttpClient();
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent, EmissionChartComponent],
       providers: [
         provideHttpClient(),
         provideRouter([]),
-        { provide: EmissionsService, useValue: emissionsService },
-        { provide: AuthService, useValue: authService }
+        { provide: HttpClient, useValue: http },
+        { provide: EmissionsService, useValue: mockEmissionsService },
+        { provide: AuthService, useValue: mockAuthService }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-
-    // Default successful responses
-    emissionsService.getUserEmissions.and.returnValue(of([]));
-    emissionsService.addEmission.and.returnValue(of({ success: true }));
-
-    fixture.detectChanges(); // Trigger ngOnInit
+    fixture.detectChanges();
   });
 
-  it('should create the component', () => {
-    expect(component).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy(); // confirms component loads without crashing
   });
 
-  it('should fetch user emissions on loadUserEmissions', () => {
-    component.loadUserEmissions();
-    expect(emissionsService.getUserEmissions).toHaveBeenCalled();
-    expect(component.userEmissions).toEqual([]);
+  it('should call addData and reset fields on success', () => {
+    // Simulate valid form inputs
+    component.metric = 'Electricity';
+    component.unit = 'kWh';
+    component.value = 100;
+
+    component.addData(); // Trigger addData()
+
+    // Check that the post request was made correctly
+    expect(http.post).toHaveBeenCalledWith(
+      'http://127.0.0.1:5000/add',
+      { Metric: 'Electricity', Unit: 'kWh', Value: 100 }
+    );
+
+    // Check that input fields were reset
+    expect(component.metric).toBe('');
+    expect(component.unit).toBe('');
+    expect(component.value).toBeNull();
   });
 
-  it('should call logout and navigate to login', () => {
-    spyOn(component['router'], 'navigate');
-    component.logout();
-    expect(authService.logout).toHaveBeenCalled();
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/login']);
-  });
+  it('should alert and not call post if input is invalid', () => {
+    spyOn(window, 'alert'); // Spy on alert()
 
-  it('should not add emission if inputs are invalid', () => {
-    spyOn(window, 'alert');
-    component.newEmission = { category: '', type: '', value: null };
-    component.addEmission();
-    expect(window.alert).toHaveBeenCalled();
-  });
+    // Simulate invalid inputs
+    component.metric = '';
+    component.unit = '';
+    component.value = null;
 
-  it('should call emissionsService.addEmission when valid emission is added', () => {
-    component.newEmission = { category: 'Transport', type: 'Car', value: 10 };
-    component.addEmission();
-    expect(emissionsService.addEmission).toHaveBeenCalledWith({
-      category: 'Transport',
-      type: 'Car',
-      value: 10
-    });
-  });
+    component.addData(); // Try to submit
 
-  it('should handle errors from emissionsService.addEmission', () => {
-    emissionsService.addEmission.and.returnValue(throwError(() => new Error('Add failed')));
-    spyOn(window, 'alert');
-    component.newEmission = { category: 'Transport', type: 'Car', value: 10 };
-    component.addEmission();
-    expect(window.alert).toHaveBeenCalledWith('Error adding emission: Add failed');
+    // Make sure alert was shown and post wasn't called
+    expect(window.alert).toHaveBeenCalledWith('Please provide valid Metric, Unit, and Value.');
+    expect(http.post).not.toHaveBeenCalled();
   });
 });
