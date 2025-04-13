@@ -1,45 +1,37 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { provideHttpClient, HttpClient } from '@angular/common/http';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { EmissionsService } from '../services/emissions.service';
 import { AuthService } from '../services/auth.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { EmissionChartComponent } from '../emission-chart/emission-chart.component';
-
-// Mock HttpClient
-class MockHttpClient {
-  post = jasmine.createSpy().and.returnValue(of({ success: true }));
-  get = jasmine.createSpy().and.returnValue(of({ message: 'Welcome' }));
-}
-
-// Mock EmissionsService
-const mockEmissionsService = {
-  getUserEmissions: () => of([]),
-  addEmission: () => of({ success: true })
-};
-
-// Mock AuthService
-const mockAuthService = {
-  logout: () => {}
-};
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let http: MockHttpClient;
+  let mockRouter: jasmine.SpyObj<Router>;
+
+  const mockEmissionsService = {
+    getUserEmissions: () => of([]),
+    addEmission: () => of({ success: true })
+  };
+
+  const mockAuthService = {
+    logout: jasmine.createSpy('logout')
+  };
 
   beforeEach(async () => {
-    http = new MockHttpClient();
+    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent, EmissionChartComponent],
       providers: [
         provideHttpClient(),
         provideRouter([]),
-        { provide: HttpClient, useValue: http },
         { provide: EmissionsService, useValue: mockEmissionsService },
-        { provide: AuthService, useValue: mockAuthService }
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: Router, useValue: mockRouter }
       ]
     }).compileComponents();
 
@@ -48,42 +40,95 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy(); // confirms component loads without crashing
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should call addData and reset fields on success', () => {
-    // Simulate valid form inputs
+  //  Test the success path of converting data
+  it('should handle convertData() success case', () => {
+    const mockResponse = { Emissions: 42 };
+    spyOn(component['http'], 'post').and.returnValue(of(mockResponse));
+
+    component.conversionMetric = 'Electricity';
+    component.conversionValue = 100;
+    component.targetUnit = 'kg';
+    component.convertData();
+
+    expect(component.energyEmissions).toBe(42);
+    expect(component.convertedData).toEqual(mockResponse);
+  });
+
+  //  Handle API failure during conversion
+  it('should handle convertData() failure case', () => {
+    spyOn(component['http'], 'post').and.returnValue(throwError(() => new Error('Conversion failed')));
+    spyOn(console, 'error');
+
+    component.conversionMetric = 'Electricity';
+    component.conversionValue = 100;
+    component.targetUnit = 'kg';
+    component.convertData();
+
+    expect(console.error).toHaveBeenCalledWith('Error converting data:', jasmine.any(Error));
+  });
+
+  // 📊 Test fetching summarized data and setting it
+  it('should call summarizeData() and set summary', () => {
+    const mockSummary = { total: 123 };
+    spyOn(component['http'], 'get').and.returnValue(of(mockSummary));
+
     component.metric = 'Electricity';
-    component.unit = 'kWh';
-    component.value = 100;
+    component.summarizeData();
 
-    component.addData(); // Trigger addData()
-
-    // Check that the post request was made correctly
-    expect(http.post).toHaveBeenCalledWith(
-      'http://127.0.0.1:5000/add',
-      { Metric: 'Electricity', Unit: 'kWh', Value: 100 }
-    );
-
-    // Check that input fields were reset
-    expect(component.metric).toBe('');
-    expect(component.unit).toBe('');
-    expect(component.value).toBeNull();
+    expect(component.summary).toEqual(mockSummary);
   });
 
-  it('should alert and not call post if input is invalid', () => {
-    spyOn(window, 'alert'); // Spy on alert()
+  it('should handle summarizeData() error', () => {
+    spyOn(component['http'], 'get').and.returnValue(throwError(() => new Error('Summary error')));
+    spyOn(console, 'error');
 
-    // Simulate invalid inputs
-    component.metric = '';
-    component.unit = '';
-    component.value = null;
+    component.summarizeData();
 
-    component.addData(); // Try to submit
+    expect(console.error).toHaveBeenCalledWith('Error fetching summary:', jasmine.any(Error));
+  });
 
-    // Make sure alert was shown and post wasn't called
-    expect(window.alert).toHaveBeenCalledWith('Please provide valid Metric, Unit, and Value.');
-    expect(http.post).not.toHaveBeenCalled();
+  it('should calculate emissions and store result', () => {
+    const mockResult = { Emissions: 88 };
+    spyOn(component['http'], 'post').and.returnValue(of(mockResult));
+
+    component.conversionMetric = 'Electricity';
+    component.conversionValue = 150;
+    component.calculateEmissions();
+
+    expect(component.energyEmissions).toBe(88);
+  });
+
+  it('should handle calculateEmissions() error', () => {
+    spyOn(component['http'], 'post').and.returnValue(throwError(() => new Error('Calc fail')));
+    spyOn(console, 'error');
+
+    component.conversionMetric = 'Electricity';
+    component.conversionValue = 150;
+    component.calculateEmissions();
+
+    expect(console.error).toHaveBeenCalledWith('Error calculating emissions:', jasmine.any(Error));
+  });
+
+  //  Should redirect to chat route
+  it('should navigate to /chat from goToChat()', () => {
+    component.goToChat();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/chat']);
+  });
+
+  //  Should redirect to daily emissions route
+  it('should navigate to /daily-emissions from goToDailyEmissions()', () => {
+    component.goToDailyEmissions();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/daily-emissions']);
+  });
+
+  //  Should logout and navigate to login route
+  it('should call logout and navigate to /login', () => {
+    component.logout();
+    expect(mockAuthService.logout).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
   });
 });
