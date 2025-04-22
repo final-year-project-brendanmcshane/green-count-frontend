@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 <div class="container mt-4">
   <h2 class="text-center mb-4">Daily Emission Calculator</h2>
 
-  <!-- Card to wrap our form inputs -->
   <div class="card shadow-sm">
     <div class="card-body">
 
@@ -51,29 +50,36 @@ import { Router } from '@angular/router';
         <span class="ms-2 fw-bold">{{ hoursWorked() }} hours</span>
       </div>
 
-      <!-- Food Selection -->
-      <div class="mb-3">
+      <!-- Dynamic Food Entries -->
+      <div *ngFor="let food of foodEntries(); let i = index" class="mb-3">
         <label class="form-label">Select Food Item:</label>
-        <select class="form-select w-auto" (change)="updateFoodType($event)">
+        <select
+          class="form-select w-auto"
+          [value]="food.type"
+          (change)="updateFoodType(i, $any($event.target).value)">
           <option *ngFor="let fType of foodTypes" [value]="fType">{{ fType }}</option>
         </select>
-      </div>
 
-      <!-- Food Quantity -->
-      <div class="mb-3">
-        <label class="form-label">Food Consumed (kg):</label>
+        <label class="form-label mt-2">Food Consumed (kg):</label>
         <input
           type="range"
           class="form-range w-50"
           min="0"
           max="5"
-          [value]="foodQuantity()"
-          (input)="updateFoodQuantity($event)"
+          [value]="food.quantity"
+          (input)="updateFoodQuantity(i, $any($event.target).value)"
         />
-        <span class="ms-2 fw-bold">{{ foodQuantity() }} kg</span>
+        <span class="ms-2 fw-bold">{{ food.quantity }} kg</span>
+
+        <hr *ngIf="i < foodEntries().length - 1">
       </div>
 
-      <!-- Calculate Button + Result -->
+      <!-- Add Another Food -->
+      <div class="mb-4">
+        <button class="btn btn-outline-success" (click)="addFoodEntry()">Add Another Food</button>
+      </div>
+
+      <!-- Calculate and Result -->
       <div class="text-center">
         <button class="btn btn-primary me-3" (click)="calculateEmissions()">Calculate</button>
         <h3 class="d-inline-block mt-3">Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
@@ -82,11 +88,10 @@ import { Router } from '@angular/router';
     </div>
   </div>
 
-  <!-- Back to Home Button -->
+  <!-- Back to Home -->
   <div class="text-center mt-4">
     <button class="btn btn-secondary" (click)="goHome()">Back to Home</button>
   </div>
-
 </div>
   `,
   styles: []
@@ -110,46 +115,59 @@ export class DailyEmissionsComponent {
   selectedVehicle = signal<string>('petrol');
   milesDriven = signal<number>(10);
   hoursWorked = signal<number>(8);
-  selectedFood = signal<string>('beef');
-  foodQuantity = signal<number>(1);
+
+  // array of food entries for dynamic sliders
+  foodEntries = signal<{ type: string; quantity: number }[]>([
+    { type: 'beef', quantity: 1 }
+  ]);
+
+  addFoodEntry() {
+    const current = this.foodEntries();
+    this.foodEntries.set([...current, { type: 'beef', quantity: 1 }]);
+  }
+
+  updateFoodType(index: number, value: string) {
+    const arr = [...this.foodEntries()];
+    arr[index].type = value;
+    this.foodEntries.set(arr);
+  }
+
+  updateFoodQuantity(index: number, value: string | number) {
+    const arr = [...this.foodEntries()];
+    arr[index].quantity = Number(value) || 0;
+    this.foodEntries.set(arr);
+  }
 
   updateVehicleType(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    this.selectedVehicle.set(target.value);
+    const v = (event.target as HTMLSelectElement).value;
+    this.selectedVehicle.set(v);
   }
 
   updateMilesDriven(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.milesDriven.set(Number(target.value) || 0);
+    const m = Number((event.target as HTMLInputElement).value) || 0;
+    this.milesDriven.set(m);
   }
 
   updateHoursWorked(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.hoursWorked.set(Number(target.value) || 0);
-  }
-
-  updateFoodType(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    this.selectedFood.set(target.value);
-  }
-
-  updateFoodQuantity(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.foodQuantity.set(Number(target.value) || 0);
+    const h = Number((event.target as HTMLInputElement).value) || 0;
+    this.hoursWorked.set(h);
   }
 
   calculateEmissions() {
     console.log('Total Emissions:', this.totalEmissions());
   }
 
-  goHome(): void {
+  goHome() {
     this.router.navigate(['/home']);
   }
 
   totalEmissions = computed(() => {
-    const vehicleCO2 = this.milesDriven() * (this.vehicleEmissions[this.selectedVehicle()] || 0);
+    const vehCO2 = this.milesDriven() * (this.vehicleEmissions[this.selectedVehicle()] || 0);
     const workCO2 = this.hoursWorked() * 0.33378;
-    const foodCO2 = this.foodQuantity() * (this.foodEmissions[this.selectedFood()] || 0);
-    return (vehicleCO2 + workCO2 + foodCO2).toFixed(2);
+    const foodCO2 = this.foodEntries().reduce(
+      (sum, f) => sum + f.quantity * (this.foodEmissions[f.type] || 0),
+      0
+    );
+    return (vehCO2 + workCO2 + foodCO2).toFixed(2);
   });
 }
