@@ -250,6 +250,10 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/daily-emissions']);
   }
 
+  goToWeeklyEmissions(): void {
+    this.router.navigate(['/weekly-emissions']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']); // Redirect to login page

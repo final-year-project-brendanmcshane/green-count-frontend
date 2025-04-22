@@ -331,7 +331,9 @@
   <button class="btn btn-info mt-3" (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
   <br><br>
   <button class="btn btn-warning" (click)="goToDailyEmissions()">Calculate Daily Emissions</button><br>
-  <button class="btn btn-primary mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
+  <button class="btn btn-primary mt-3" (click)="goToWeeklyEmissions()">Calculate Weekly Emissions</button><br>
+  <button class="btn btn-info mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
+  
 
   @if (userEmissions.length > 0) 
   {
