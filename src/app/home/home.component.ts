@@ -7,11 +7,12 @@ import { AuthService } from '../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { EmissionChartComponent } from '../emission-chart/emission-chart.component';
 import { Router } from '@angular/router';
+import { TipOfTheDayComponent } from '../tip-of-the-day/tip-of-the-day.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, EmissionChartComponent],
+  imports: [CommonModule, FormsModule, EmissionChartComponent, TipOfTheDayComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
