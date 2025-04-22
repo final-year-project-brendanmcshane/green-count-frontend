@@ -51,28 +51,39 @@ describe('DailyEmissionsComponent', () => {
 
   it('should update food type', () => {
     // Checking if food type selection updates properly
-    const event = { target: { value: 'vegetables' } } as unknown as Event;
-    component.updateFoodType(event);
-    expect(component.selectedFood()).toBe('vegetables');
+    // Using the first food entry (index 0)
+    const foodIndex = 0;
+    component.updateFoodType(foodIndex, 'vegetables');
+    expect(component.foodEntries()[foodIndex].type).toBe('vegetables');
   });
 
   it('should update food quantity', () => {
     // Making sure the food quantity slider works
-    const event = { target: { value: '3' } } as unknown as Event;
-    component.updateFoodQuantity(event);
-    expect(component.foodQuantity()).toBe(3);
+    // Using the first food entry (index 0)
+    const foodIndex = 0;
+    component.updateFoodQuantity(foodIndex, 3);
+    expect(component.foodEntries()[foodIndex].quantity).toBe(3);
+  });
+
+  it('should add new food entry', () => {
+    // Test adding a new food entry
+    const initialLength = component.foodEntries().length;
+    component.addFoodEntry();
+    expect(component.foodEntries().length).toBe(initialLength + 1);
   });
 
   it('should calculate total emissions correctly', () => {
     // Manually setting some values to check if the calculation is accurate
     component.milesDriven.set(10);     // petrol = 0.26473 * 10
     component.hoursWorked.set(8);      // 0.33378 * 8
-    component.foodQuantity.set(2);     // beef = 27 * 2
     component.selectedVehicle.set('petrol');
-    component.selectedFood.set('beef');
+    
+    // Update the first food entry to beef with quantity 2
+    const foodEntries = [{ type: 'beef', quantity: 2 }];
+    component.foodEntries.set(foodEntries);
 
     const total = component.totalEmissions();
-    expect(total).toBe('59.32');  // Just checking the final computed output
+    expect(total).toBe('59.32');  // Final computed output
   });
 
   it('should navigate to home on goHome()', () => {
