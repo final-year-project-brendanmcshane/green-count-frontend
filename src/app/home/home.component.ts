@@ -263,7 +263,16 @@ export class HomeComponent implements OnInit {
   
   
   
-  
+  toggleMenu() {
+    const offcanvas = document.getElementById('offcanvasNav');
+    if (offcanvas) {
+      if (offcanvas.classList.contains('show')) {
+        offcanvas.classList.remove('show');
+      } else {
+        offcanvas.classList.add('show');
+      }
+    }
+  }
   
   
   
