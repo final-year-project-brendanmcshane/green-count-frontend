@@ -261,6 +261,27 @@ export class HomeComponent implements OnInit {
   }
   
   
+  onCategoryChange() {
+    switch (this.newEmission.category) {
+      case 'Car':
+        this.newEmission.type = 'Diesel';
+        break;
+      case 'Transport':
+        this.newEmission.type = 'Taxi';
+        break;
+      case 'Energy':
+        this.newEmission.type = 'Electricity';
+        break;
+      case 'Working':
+        this.newEmission.type = 'Office';
+        break;
+      case 'Accommodation':
+        this.newEmission.type = 'Hotel-UK';
+        break;
+      default:
+        this.newEmission.type = '';
+    }
+  }
   
   
   toggleMenu() {

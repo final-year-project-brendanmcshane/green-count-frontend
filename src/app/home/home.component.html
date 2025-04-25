@@ -357,45 +357,47 @@
       <div class="row g-3 mb-3">
         <div class="col-md-4">
           <label class="form-label">Category:</label>
-          <select class="form-select" [(ngModel)]="newEmission.category">
+          <select class="form-select" [(ngModel)]="newEmission.category" (ngModelChange)="onCategoryChange()">
             <option value="Car">Car</option>
             <option value="Transport">Transport</option>
             <option value="Energy">Energy</option>
             <option value="Working">Working</option>
             <option value="Accommodation">Accommodation</option>
           </select>
+          
         </div>
         <div class="col-md-4">
           <label class="form-label">Type:</label>
           <select class="form-select" [(ngModel)]="newEmission.type">
             <!-- Car options -->
             @if (newEmission.category === 'Car') {
-            <option value="Diesel">Diesel</option>
-            <option value="Petrol">Petrol</option>
-            <option value="Hybrid">Hybrid</option>
+              <option value="Diesel" selected>Diesel</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Hybrid">Hybrid</option>
             }
             <!-- Transport options -->
             @if (newEmission.category === 'Transport') {
-            <option value="Taxi">Taxi</option>
-            <option value="Bus">Bus</option>
-            <option value="Rail">Rail</option>
-            <option value="Flight">Flight</option>
+              <option value="Taxi" selected>Taxi</option>
+              <option value="Bus">Bus</option>
+              <option value="Rail">Rail</option>
+              <option value="Flight">Flight</option>
             }
             <!-- Energy options -->
             @if (newEmission.category === 'Energy') {
-            <option value="Electricity">Electricity</option>
+              <option value="Electricity" selected>Electricity</option>
             }
             <!-- Working options -->
             @if (newEmission.category === 'Working') {
-            <option value="Office">Office</option>
-            <option value="Home">Home</option>
+              <option value="Office" selected>Office</option>
+              <option value="Home">Home</option>
             }
             <!-- Accommodation options -->
             @if (newEmission.category === 'Accommodation') {
-            <option value="Hotel-UK">Hotel-UK</option>
-            <option value="Hotel-London">Hotel-London</option>
+              <option value="Hotel-UK" selected>Hotel-UK</option>
+              <option value="Hotel-London">Hotel-London</option>
             }
           </select>
+          
         </div>
         <div class="col-md-4">
           <label class="form-label">Value:</label>
