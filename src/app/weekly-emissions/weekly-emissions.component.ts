@@ -7,94 +7,8 @@ import { Router } from '@angular/router';
   selector: 'app-weekly-emissions',
   standalone: true,
   imports: [RouterModule, NgFor, NgIf],
-  template: `
-<div class="container mt-4">
-  <h2 class="text-center mb-4">Weekly Emission Calculator</h2>
-
-  <div class="card shadow-sm">
-    <div class="card-body">
-
-      <!-- Vehicle Type -->
-      <div class="mb-3">
-        <label class="form-label">Select Vehicle Type:</label>
-        <select class="form-select w-auto" (change)="updateVehicleType($event)">
-          <option *ngFor="let vType of vehicleTypes" [value]="vType">{{ vType }}</option>
-        </select>
-      </div>
-
-      <!-- Miles Driven (Weekly) -->
-      <div class="mb-3">
-        <label class="form-label">Miles Driven This Week:</label>
-        <input
-          type="range"
-          class="form-range w-50"
-          min="0"
-          max="700"
-          [value]="milesDriven()"
-          (input)="updateMilesDriven($event)"
-        />
-        <span class="ms-2 fw-bold">{{ milesDriven() }} miles</span>
-      </div>
-
-      <!-- Hours Worked (Weekly) -->
-      <div class="mb-3">
-        <label class="form-label">Hours Worked This Week:</label>
-        <input
-          type="range"
-          class="form-range w-50"
-          min="0"
-          max="168"
-          [value]="hoursWorked()"
-          (input)="updateHoursWorked($event)"
-        />
-        <span class="ms-2 fw-bold">{{ hoursWorked() }} hours</span>
-      </div>
-
-      <!-- Dynamic Food Entries -->
-      <div *ngFor="let food of foodEntries(); let i = index" class="mb-3">
-        <label class="form-label">Select Food Item:</label>
-        <select
-          class="form-select w-auto"
-          [value]="food.type"
-          (change)="updateFoodType(i, $any($event.target).value)">
-          <option *ngFor="let fType of foodTypes" [value]="fType">{{ fType }}</option>
-        </select>
-
-        <label class="form-label mt-2">Food Consumed This Week (kg):</label>
-        <input
-          type="range"
-          class="form-range w-50"
-          min="0"
-          max="35"
-          [value]="food.quantity"
-          (input)="updateFoodQuantity(i, $any($event.target).value)"
-        />
-        <span class="ms-2 fw-bold">{{ food.quantity }} kg</span>
-
-        <hr *ngIf="i < foodEntries().length - 1">
-      </div>
-
-      <!-- Add Another Food -->
-      <div class="mb-4">
-        <button class="btn btn-outline-success" (click)="addFoodEntry()">Add Another Food</button>
-      </div>
-
-      <!-- Calculate and Result -->
-      <div class="text-center">
-        <button class="btn btn-primary me-3" (click)="calculateEmissions()">Calculate</button>
-        <h3 class="d-inline-block mt-3">Total Weekly Emissions: {{ totalEmissions() }} kg CO2</h3>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Back to Home -->
-  <div class="text-center mt-4">
-    <button class="btn btn-secondary" (click)="goHome()">Back to Home</button>
-  </div>
-</div>
-  `,
-  styles: []
+  templateUrl: './weekly-emissions.component.html',
+  styleUrls: ['./weekly-emissions.component.css'] // Optional: Add CSS file if needed later
 })
 export class WeeklyEmissionsComponent {
 
@@ -126,12 +40,14 @@ export class WeeklyEmissionsComponent {
   }
 
   updateFoodType(index: number, value: string) {
-    const arr = [...this.foodEntries()]; arr[index].type = value;
+    const arr = [...this.foodEntries()];
+    arr[index].type = value;
     this.foodEntries.set(arr);
   }
 
   updateFoodQuantity(index: number, value: string | number) {
-    const arr = [...this.foodEntries()]; arr[index].quantity = Number(value) || 0;
+    const arr = [...this.foodEntries()];
+    arr[index].quantity = Number(value) || 0;
     this.foodEntries.set(arr);
   }
 
@@ -153,6 +69,17 @@ export class WeeklyEmissionsComponent {
 
   goHome() {
     this.router.navigate(['/home']);
+  }
+
+  toggleMenu(): void {
+    const offcanvas = document.getElementById('offcanvasNav');
+    if (offcanvas) {
+      if (offcanvas.classList.contains('show')) {
+        offcanvas.classList.remove('show');
+      } else {
+        offcanvas.classList.add('show');
+      }
+    }
   }
 
   totalEmissions = computed(() => {
