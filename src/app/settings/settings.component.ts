@@ -7,84 +7,25 @@ import { RouterModule } from '@angular/router';
   selector: 'app-settings',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  template: `
-    <div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-header">
-          <h2 class="card-title mb-0">Settings</h2>
-        </div>
-        <div class="card-body">
-          <form (ngSubmit)="saveSettings()">
-            <!-- Dark Mode Toggle Only -->
-            <div class="mb-3 form-check">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="darkModeToggle"
-                [(ngModel)]="enableDarkMode"
-                name="enableDarkMode"
-              />
-              <label for="darkModeToggle" class="form-check-label">
-                Enable Dark Mode
-              </label>
-            </div>
-
-            <!-- Save Button -->
-            <button type="submit" class="btn btn-primary w-100">
-              Save Settings
-            </button>
-          </form>
-
-          <!-- Back to Home Button -->
-          <a routerLink="/home" class="btn btn-secondary w-100 mt-2">
-            Back to Home
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  `
+  templateUrl: './settings.component.html' // 🔥 now using separate HTML file
 })
 export class SettingsComponent implements OnInit {
-  enableNotifications = false;
   enableDarkMode = false;
-  selectedLanguage = 'en';
 
   ngOnInit(): void {
-    // Load saved settings from localStorage
-    const savedNotifications = localStorage.getItem('enableNotifications');
     const savedDarkMode = localStorage.getItem('enableDarkMode');
-    const savedLanguage = localStorage.getItem('selectedLanguage');
-
-    if (savedNotifications !== null) {
-      this.enableNotifications = savedNotifications === 'true';
-    }
 
     if (savedDarkMode !== null) {
       this.enableDarkMode = savedDarkMode === 'true';
       this.applyDarkMode();
     }
-
-    if (savedLanguage) {
-      this.selectedLanguage = savedLanguage;
-    }
   }
 
   saveSettings(): void {
-    // Save to localStorage
-    localStorage.setItem('enableNotifications', this.enableNotifications.toString());
     localStorage.setItem('enableDarkMode', this.enableDarkMode.toString());
-    localStorage.setItem('selectedLanguage', this.selectedLanguage);
-
     this.applyDarkMode();
-
     console.log('✅ Settings saved:', {
-      notifications: this.enableNotifications,
-      darkMode: this.enableDarkMode,
-      language: this.selectedLanguage
+      darkMode: this.enableDarkMode
     });
   }
 
@@ -95,4 +36,16 @@ export class SettingsComponent implements OnInit {
       document.body.classList.remove('dark-mode');
     }
   }
+
+  toggleMenu(): void {
+    const offcanvas = document.getElementById('offcanvasNav');
+    if (offcanvas) {
+      if (offcanvas.classList.contains('show')) {
+        offcanvas.classList.remove('show');
+      } else {
+        offcanvas.classList.add('show');
+      }
+    }
+  }
+  
 }
