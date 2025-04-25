@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
 
 
 
-  constructor(private http: HttpClient, private emissionsService: EmissionsService, private authService: AuthService, private router: Router) {}
+  constructor(private http: HttpClient, private emissionsService: EmissionsService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.http.get<any>('http://127.0.0.1:5000/').subscribe(data => {
@@ -111,22 +111,22 @@ export class HomeComponent implements OnInit {
       alert('Please provide valid Metric, Value (greater than 0), and Target Unit for conversion.');
       return;
     }
-  
+
     const payload = {
       Metric: this.conversionMetric.trim().toLowerCase(),  // Normalize to lowercase
       Value: this.conversionValue,
       TargetUnit: this.targetUnit.trim()
     };
-  
+
     console.log('Payload sent to backend:', payload);
-  
+
     this.http.post<any>('http://127.0.0.1:5000/convert', payload).subscribe(
       response => {
         console.log('Conversion successful:', response);
-  
+
         // Log the entire response to check if emissions are included
         console.log('Full response:', response);
-  
+
         // If Emissions is available in the response, store it
         if (response && response.Emissions !== undefined) {
           this.energyEmissions = response.Emissions;  // Store the energy-related emissions
@@ -134,7 +134,7 @@ export class HomeComponent implements OnInit {
         } else {
           console.error('Emissions data is missing in the response.');
         }
-  
+
         // Store other data as well
         this.convertedData = response;
       },
@@ -143,21 +143,21 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-  
-  
+
+
   // Rough 7 kg/day => 210 kg/month => ~2.5 tonnes/year
   recommendedDailyEmissions = 7;
   recommendedMonthlyEmissions = this.recommendedDailyEmissions * 30;
   recommendedYearlyEmissions = this.recommendedDailyEmissions * 365; // ~2555 kg/year
 
-  
+
 
   convertFoodImpact(): void {
     const payload = {
       FoodItem: this.foodItem,  // e.g., 'beef'
       Weight: this.foodWeight    // e.g., 2 kg
     };
-  
+
     this.http.post<any>('http://127.0.0.1:5000/food-impact', payload).subscribe(
       response => {
         console.log('Food impact calculated:', response);
@@ -168,21 +168,21 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-  
+
 
   calculateEmissions(): void {
     if (!this.conversionMetric || this.conversionValue === null || this.conversionValue <= 0) {
       alert('Please provide valid Metric and Value (greater than 0).');
       return;
     }
-  
+
     const payload = {
       Metric: this.conversionMetric.trim(),
       Value: this.conversionValue
     };
-  
+
     console.log('Payload sent to backend:', payload);
-  
+
     this.http.post<any>('http://127.0.0.1:5000/convert', payload).subscribe(
       response => {
         console.log('Emissions calculation successful:', response);
@@ -205,41 +205,41 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-  
+
   addEmission(): void {
     console.log('Current newEmission state:', this.newEmission); // Debug line
 
     // Validate inputs
-    if (!this.newEmission.category || 
-        !this.newEmission.type || 
-        !this.newEmission.value || 
-        this.newEmission.value <= 0) {
-        alert(`Please provide valid data:
+    if (!this.newEmission.category ||
+      !this.newEmission.type ||
+      !this.newEmission.value ||
+      this.newEmission.value <= 0) {
+      alert(`Please provide valid data:
             Category: ${this.newEmission.category}
             Type: ${this.newEmission.type}
             Value: ${this.newEmission.value}`);
-        return;
+      return;
     }
 
     const emissionData = {
-        category: this.newEmission.category,
-        type: this.newEmission.type,
-        value: this.newEmission.value
+      category: this.newEmission.category,
+      type: this.newEmission.type,
+      value: this.newEmission.value
     };
 
     console.log('Sending emission data:', emissionData); // Debug line
 
     this.emissionsService.addEmission(emissionData).subscribe({
-        next: (response) => {
-            console.log('Emission added successfully:', response);
-            this.loadUserEmissions();
-            // Reset form
-            this.newEmission = { category: '', type: '', value: null };
-        },
-        error: (error) => {
-            console.error('Error adding emission:', error);
-            alert('Error adding emission: ' + error.message);
-        }
+      next: (response) => {
+        console.log('Emission added successfully:', response);
+        this.loadUserEmissions();
+        // Reset form
+        this.newEmission = { category: '', type: '', value: null };
+      },
+      error: (error) => {
+        console.error('Error adding emission:', error);
+        alert('Error adding emission: ' + error.message);
+      }
     });
   }
 
@@ -259,8 +259,8 @@ export class HomeComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']); // Redirect to login page
   }
-  
-  
+
+
   onCategoryChange() {
     switch (this.newEmission.category) {
       case 'Car':
@@ -282,8 +282,8 @@ export class HomeComponent implements OnInit {
         this.newEmission.type = '';
     }
   }
-  
-  
+
+
   toggleMenu() {
     const offcanvas = document.getElementById('offcanvasNav');
     if (offcanvas) {
@@ -294,8 +294,8 @@ export class HomeComponent implements OnInit {
       }
     }
   }
-  
-  
-  
-  
+
+
+
+
 }
