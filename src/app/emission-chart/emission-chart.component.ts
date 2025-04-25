@@ -83,9 +83,36 @@ export class EmissionChartComponent implements OnInit {
   updateChart(type: 'line' | 'bar' | 'pie', categories: string[], seriesData: number[]): void {
     this.chartOptions = {
       chart: { type: type },
-      title: { text: 'User Emissions Over Time' },
-      xAxis: { categories: categories, title: { text: 'Date' } },
-      yAxis: { title: { text: 'Emissions (kg CO2)' } },
+      title: { text: 'Carbon Emissions Breakdown by Date' },
+      subtitle: { text: 'Measured in kg CO2 equivalent' },
+      xAxis: { 
+        categories: categories, 
+        title: { text: 'Date' },
+        labels: { style: { fontSize: '12px', textOutline: 'none' } }
+      },
+      yAxis: { 
+        title: { text: 'Emissions (kg CO2)' },
+        labels: { style: { fontSize: '12px', textOutline: 'none' } }
+      },
+      plotOptions: {
+        line: {
+          dataLabels: {
+            enabled: true,
+            style: { fontSize: '12px', textOutline: 'none' }
+          }
+        },
+        bar: {
+          dataLabels: {
+            enabled: true,
+            style: { fontSize: '12px', textOutline: 'none' }
+          }
+        },
+        pie: { 
+          dataLabels: { 
+            style: { fontSize: '14px', textOutline: 'none' } 
+          } 
+        }
+      },
       series: type === 'pie'
         ? [{ type: 'pie', name: 'Emissions', data: categories.map((c, i) => ({ name: c, y: seriesData[i] })) }]
         : [{ type: type, name: 'Emissions', data: seriesData }]
