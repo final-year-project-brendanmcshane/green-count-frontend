@@ -37,4 +37,15 @@ export class InformationComponent {
       image: 'https://sdgs.un.org/themes/custom/unsdg/images/SDG-wheel.png'
     }
   ];
+
+  toggleMenu(): void {
+    const offcanvas = document.getElementById('offcanvasNav');
+    if (offcanvas) {
+      if (offcanvas.classList.contains('show')) {
+        offcanvas.classList.remove('show');
+      } else {
+        offcanvas.classList.add('show');
+      }
+    }
+  }
 }
