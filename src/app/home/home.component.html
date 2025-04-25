@@ -270,12 +270,12 @@
   -->
 
   <div class="card mb-4">
-    <div class="card-header">
+    <!-- <div class="card-header">
       <h3>Energy Impact Result</h3>
     </div>
     <div class="card-body" *ngIf="energyEmissions !== null">
       <p><strong>CO2 Emissions:</strong> {{ energyEmissions }} tons of CO2</p>
-    </div>
+    </div> -->
   </div>
 
   <div class="card mb-4">
@@ -337,7 +337,7 @@
   <button class="btn btn-info mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
   
 
-  @if (userEmissions.length > 0) 
+  <!-- @if (userEmissions.length > 0) 
   {
     <table class="table table-bordered mt-3">
       <thead>
@@ -359,7 +359,7 @@
     </table>
   } @else {
     <p>No emissions data found.</p>
-  }
+  } -->
 
   <div class="card mt-4">
     <div class="card-header">
