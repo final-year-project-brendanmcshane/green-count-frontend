@@ -229,7 +229,7 @@
   <button class="btn btn-info mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
 
 
-
+  <br><br>
 
   <div class="card mt-4">
     <div class="card-header">
@@ -286,7 +286,7 @@
           <input type="number" class="form-control" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
           <small class="form-text text-muted">{{ valueHint }}</small>  <!-- 🔥 Add this line below the input -->
         </div>
-        
+      
       </div>
       <button class="btn btn-primary" (click)="addEmission()">Add Emission</button>
     </div>
