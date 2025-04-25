@@ -1,0 +1,97 @@
+<!-- Navbar -->
+<nav class="navbar navbar-dark" style="background-color: #32cd32;">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">GreenCount</a>
+      <button class="navbar-toggler" type="button" (click)="toggleMenu()" aria-controls="offcanvasNav"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNav"
+        aria-labelledby="offcanvasNavLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavLabel">GreenCount Menu</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="toggleMenu()" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav flex-column">
+            <li class="nav-item mb-2">
+              <a class="nav-link text-white" routerLink="/home">Home</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a class="nav-link text-white" routerLink="/daily-emissions">Daily Emissions</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a class="nav-link text-white" routerLink="/chat">AI Chatbot</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a class="nav-link text-white" routerLink="/settings">Settings</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Daily Emissions Content -->
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Daily Emission Calculator</h2>
+  
+    <div class="card shadow-sm">
+      <div class="card-body">
+  
+        <!-- Vehicle Type -->
+        <div class="mb-3">
+          <label class="form-label">Select Vehicle Type:</label>
+          <select class="form-select w-auto" (change)="updateVehicleType($event)">
+            <option *ngFor="let vType of vehicleTypes" [value]="vType">{{ vType }}</option>
+          </select>
+        </div>
+  
+        <!-- Miles Driven -->
+        <div class="mb-3">
+          <label class="form-label">Miles Driven:</label>
+          <input type="range" class="form-range w-50" min="0" max="100" [value]="milesDriven()" (input)="updateMilesDriven($event)" />
+          <span class="ms-2 fw-bold">{{ milesDriven() }} miles</span>
+        </div>
+  
+        <!-- Hours Worked -->
+        <div class="mb-3">
+          <label class="form-label">Hours Worked:</label>
+          <input type="range" class="form-range w-50" min="0" max="24" [value]="hoursWorked()" (input)="updateHoursWorked($event)" />
+          <span class="ms-2 fw-bold">{{ hoursWorked() }} hours</span>
+        </div>
+  
+        <!-- Food Entries -->
+        <div *ngFor="let food of foodEntries(); let i = index" class="mb-3">
+          <label class="form-label">Select Food Item:</label>
+          <select class="form-select w-auto" [value]="food.type" (change)="updateFoodType(i, $any($event.target).value)">
+            <option *ngFor="let fType of foodTypes" [value]="fType">{{ fType }}</option>
+          </select>
+  
+          <label class="form-label mt-2">Food Consumed (kg):</label>
+          <input type="range" class="form-range w-50" min="0" max="5" [value]="food.quantity" (input)="updateFoodQuantity(i, $any($event.target).value)" />
+          <span class="ms-2 fw-bold">{{ food.quantity }} kg</span>
+  
+          <hr *ngIf="i < foodEntries().length - 1">
+        </div>
+  
+        <!-- Add Another Food -->
+        <div class="mb-4">
+          <button class="btn btn-outline-success" (click)="addFoodEntry()">Add Another Food</button>
+        </div>
+  
+        <!-- Calculate and Result -->
+        <div class="text-center">
+          <button class="btn btn-primary me-3" (click)="calculateEmissions()">Calculate</button>
+          <h3 class="d-inline-block mt-3">Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
+        </div>
+  
+      </div>
+    </div>
+  
+    <!-- Back to Home -->
+    <div class="text-center mt-4">
+      <button class="btn btn-secondary" (click)="goHome()">Back to Home</button>
+    </div>
+  </div>
+  

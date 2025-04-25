@@ -7,94 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-daily-emissions',
   standalone: true,
   imports: [RouterModule, NgFor, NgIf],
-  template: `
-<div class="container mt-4">
-  <h2 class="text-center mb-4">Daily Emission Calculator</h2>
-
-  <div class="card shadow-sm">
-    <div class="card-body">
-
-      <!-- Vehicle Type -->
-      <div class="mb-3">
-        <label class="form-label">Select Vehicle Type:</label>
-        <select class="form-select w-auto" (change)="updateVehicleType($event)">
-          <option *ngFor="let vType of vehicleTypes" [value]="vType">{{ vType }}</option>
-        </select>
-      </div>
-
-      <!-- Miles Driven -->
-      <div class="mb-3">
-        <label class="form-label">Miles Driven:</label>
-        <input
-          type="range"
-          class="form-range w-50"
-          min="0"
-          max="100"
-          [value]="milesDriven()"
-          (input)="updateMilesDriven($event)"
-        />
-        <span class="ms-2 fw-bold">{{ milesDriven() }} miles</span>
-      </div>
-
-      <!-- Hours Worked -->
-      <div class="mb-3">
-        <label class="form-label">Hours Worked:</label>
-        <input
-          type="range"
-          class="form-range w-50"
-          min="0"
-          max="24"
-          [value]="hoursWorked()"
-          (input)="updateHoursWorked($event)"
-        />
-        <span class="ms-2 fw-bold">{{ hoursWorked() }} hours</span>
-      </div>
-
-      <!-- Dynamic Food Entries -->
-      <div *ngFor="let food of foodEntries(); let i = index" class="mb-3">
-        <label class="form-label">Select Food Item:</label>
-        <select
-          class="form-select w-auto"
-          [value]="food.type"
-          (change)="updateFoodType(i, $any($event.target).value)">
-          <option *ngFor="let fType of foodTypes" [value]="fType">{{ fType }}</option>
-        </select>
-
-        <label class="form-label mt-2">Food Consumed (kg):</label>
-        <input
-          type="range"
-          class="form-range w-50"
-          min="0"
-          max="5"
-          [value]="food.quantity"
-          (input)="updateFoodQuantity(i, $any($event.target).value)"
-        />
-        <span class="ms-2 fw-bold">{{ food.quantity }} kg</span>
-
-        <hr *ngIf="i < foodEntries().length - 1">
-      </div>
-
-      <!-- Add Another Food -->
-      <div class="mb-4">
-        <button class="btn btn-outline-success" (click)="addFoodEntry()">Add Another Food</button>
-      </div>
-
-      <!-- Calculate and Result -->
-      <div class="text-center">
-        <button class="btn btn-primary me-3" (click)="calculateEmissions()">Calculate</button>
-        <h3 class="d-inline-block mt-3">Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Back to Home -->
-  <div class="text-center mt-4">
-    <button class="btn btn-secondary" (click)="goHome()">Back to Home</button>
-  </div>
-</div>
-  `,
-  styles: []
+  templateUrl: './daily-emissions.component.html'
 })
 export class DailyEmissionsComponent {
 
@@ -116,7 +29,6 @@ export class DailyEmissionsComponent {
   milesDriven = signal<number>(10);
   hoursWorked = signal<number>(8);
 
-  // array of food entries for dynamic sliders
   foodEntries = signal<{ type: string; quantity: number }[]>([
     { type: 'beef', quantity: 1 }
   ]);
@@ -159,6 +71,17 @@ export class DailyEmissionsComponent {
 
   goHome() {
     this.router.navigate(['/home']);
+  }
+
+  toggleMenu(): void {
+    const offcanvas = document.getElementById('offcanvasNav');
+    if (offcanvas) {
+      if (offcanvas.classList.contains('show')) {
+        offcanvas.classList.remove('show');
+      } else {
+        offcanvas.classList.add('show');
+      }
+    }
   }
 
   totalEmissions = computed(() => {
