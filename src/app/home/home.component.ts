@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
   userEmissions: any[] = [];
   newEmission: any = { metric: '', unit: '', value: null };  // For new emission data
   private apiUrl: string = 'http://127.0.0.1:5000';  // Define apiUrl here
+  valueHint: string = ''; //Used for when user is selecting metrics
 
 
 
@@ -261,27 +262,36 @@ export class HomeComponent implements OnInit {
   }
 
 
+ 
+
   onCategoryChange() {
     switch (this.newEmission.category) {
       case 'Car':
         this.newEmission.type = 'Diesel';
+        this.valueHint = 'Enter distance driven (miles)';
         break;
       case 'Transport':
         this.newEmission.type = 'Taxi';
+        this.valueHint = 'Enter distance traveled (miles)';
         break;
       case 'Energy':
         this.newEmission.type = 'Electricity';
+        this.valueHint = 'Enter energy consumed (kWh)';
         break;
       case 'Working':
         this.newEmission.type = 'Office';
+        this.valueHint = 'Enter hours worked';
         break;
       case 'Accommodation':
         this.newEmission.type = 'Hotel-UK';
+        this.valueHint = 'Enter number of nights stayed';
         break;
       default:
         this.newEmission.type = '';
+        this.valueHint = '';
     }
   }
+  
 
 
   toggleMenu() {
@@ -295,6 +305,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  
 
 
 

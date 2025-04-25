@@ -277,7 +277,9 @@
         <div class="col-md-4">
           <label class="form-label">Value:</label>
           <input type="number" class="form-control" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
+          <small class="form-text text-muted">{{ valueHint }}</small>  <!-- 🔥 Add this line below the input -->
         </div>
+        
       </div>
       <button class="btn btn-primary" (click)="addEmission()">Add Emission</button>
     </div>
