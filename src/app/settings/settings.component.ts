@@ -7,25 +7,36 @@ import { RouterModule } from '@angular/router';
   selector: 'app-settings',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './settings.component.html' // 🔥 now using separate HTML file
+  templateUrl: './settings.component.html'
 })
 export class SettingsComponent implements OnInit {
   enableDarkMode = false;
+  enableAnimations = true;
 
   ngOnInit(): void {
     const savedDarkMode = localStorage.getItem('enableDarkMode');
+    const savedAnimations = localStorage.getItem('enableAnimations');
 
     if (savedDarkMode !== null) {
       this.enableDarkMode = savedDarkMode === 'true';
       this.applyDarkMode();
     }
+
+    if (savedAnimations !== null) {
+      this.enableAnimations = savedAnimations === 'true';
+      this.applyAnimations();
+    }
   }
 
   saveSettings(): void {
     localStorage.setItem('enableDarkMode', this.enableDarkMode.toString());
+    localStorage.setItem('enableAnimations', this.enableAnimations.toString());
     this.applyDarkMode();
+    this.applyAnimations();
+
     console.log('✅ Settings saved:', {
-      darkMode: this.enableDarkMode
+      darkMode: this.enableDarkMode,
+      animations: this.enableAnimations
     });
   }
 
@@ -37,15 +48,18 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  applyAnimations(): void {
+    if (this.enableAnimations) {
+      document.body.classList.remove('no-animations');
+    } else {
+      document.body.classList.add('no-animations');
+    }
+  }
+
   toggleMenu(): void {
     const offcanvas = document.getElementById('offcanvasNav');
     if (offcanvas) {
-      if (offcanvas.classList.contains('show')) {
-        offcanvas.classList.remove('show');
-      } else {
-        offcanvas.classList.add('show');
-      }
+      offcanvas.classList.toggle('show');
     }
   }
-  
 }
