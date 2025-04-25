@@ -9,72 +9,43 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, FormsModule, RouterModule],
   template: `
     <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card shadow">
-            <div class="card-header">
-              <h2 class="card-title mb-0">Settings</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header">
+          <h2 class="card-title mb-0">Settings</h2>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="saveSettings()">
+            <!-- Dark Mode Toggle Only -->
+            <div class="mb-3 form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="darkModeToggle"
+                [(ngModel)]="enableDarkMode"
+                name="enableDarkMode"
+              />
+              <label for="darkModeToggle" class="form-check-label">
+                Enable Dark Mode
+              </label>
             </div>
-            <div class="card-body">
-              <form (ngSubmit)="saveSettings()">
-                <!-- Notification Toggle -->
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="notificationsToggle"
-                    [(ngModel)]="enableNotifications"
-                    name="enableNotifications"
-                  />
-                  <label for="notificationsToggle" class="form-check-label">
-                    Enable Notifications
-                  </label>
-                </div>
 
-                <!-- Dark Mode Toggle -->
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="darkModeToggle"
-                    [(ngModel)]="enableDarkMode"
-                    name="enableDarkMode"
-                  />
-                  <label for="darkModeToggle" class="form-check-label">
-                    Enable Dark Mode
-                  </label>
-                </div>
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-primary w-100">
+              Save Settings
+            </button>
+          </form>
 
-                <!-- Language Selection -->
-                <div class="mb-3">
-                  <label for="languageSelect" class="form-label">Language</label>
-                  <select
-                    id="languageSelect"
-                    class="form-select"
-                    [(ngModel)]="selectedLanguage"
-                    name="selectedLanguage"
-                  >
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                  </select>
-                </div>
-
-                <!-- Save Button -->
-                <button type="submit" class="btn btn-primary w-100">
-                  Save Settings
-                </button>
-              </form>
-                <!-- Back to Home Button -->
-                  <a routerLink="/home" class="btn btn-secondary w-100 mt-2">
-                    Back to Home
-                  </a>
-
-            </div>
-          </div>
+          <!-- Back to Home Button -->
+          <a routerLink="/home" class="btn btn-secondary w-100 mt-2">
+            Back to Home
+          </a>
         </div>
       </div>
     </div>
+  </div>
+</div>
   `
 })
 export class SettingsComponent implements OnInit {
