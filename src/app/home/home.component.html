@@ -165,97 +165,12 @@
   <app-tip-of-the-day></app-tip-of-the-day>
 
 
-  <!-- Action Buttons -->
-  <!-- <div>
-    <button (click)="fetchData()">Fetch Data</button>
-    <button (click)="summarizeData()">Summarize Metric</button>
-  </div> -->
+
 
   <!-- Loading Indicator -->
   <div *ngIf="isLoading" style="color: blue;">Loading...</div>
 
-  <!-- Data Table -->
-  <!-- <div *ngIf="data && data.length > 0">
-    <h2>Data Table</h2>
-    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr>
-          <th>Metric</th>
-          <th>Unit</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor=\"let item of data\">
-          <td>{{ item.Metric }}</td>
-          <td>{{ item.Unit }}</td>
-          <td>{{ item.Value }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
 
-  <!-- Add Data Form (Commented Out) -->
-  <!--
-  <div>
-    <h2>Add New Data</h2>
-    <label>Metric:</label>
-    <select [(ngModel)]="metric">
-      <option value="Electricity">Electricity</option>
-      <option value="Water">Water</option>
-      <option value="Gas">Gas</option>
-    </select>
-
-    <label>Unit:</label>
-    <select [(ngModel)]="unit">
-      <option *ngIf="metric === 'Electricity'" value="kWh">kWh</option>
-      <option *ngIf="metric === 'Electricity'" value="MWh">MWh</option>
-      <option *ngIf="metric !== 'Electricity'" value="liters">Liters</option>
-      <option *ngIf="metric !== 'Electricity'" value="gallons">Gallons</option>
-      <option *ngIf="metric !== 'Electricity'" value="cubic meters">Cubic Meters</option>
-    </select>
-
-    <label>Value:</label>
-    <input type="number" [(ngModel)]="value" placeholder="Enter value (e.g., 100)" />
-    <button (click)="addData()">Submit</button>
-  </div>
-  -->
-
-  <!-- Convert Data Form (Commented Out) -->
-  <!--
-  <div>
-    <h2>Convert Data</h2>
-    <label>Metric:</label>
-    <select [(ngModel)]="conversionMetric">
-      <option value="Electricity">Electricity</option>
-      <option value="Water">Water</option>
-      <option value="Gas">Gas</option>
-    </select>
-
-    <label>Value:</label>
-    <input type="number" [(ngModel)]="conversionValue" placeholder="Enter value to convert" />
-
-    <label>Target Unit:</label>
-    <select [(ngModel)]="targetUnit">
-      <option *ngIf="conversionMetric === 'Electricity'" value="kWh">kWh</option>
-      <option *ngIf="conversionMetric === 'Electricity'" value="MWh">MWh</option>
-      <option *ngIf="conversionMetric !== 'Electricity'" value="liters">Liters</option>
-      <option *ngIf="conversionMetric !== 'Electricity'" value="gallons">Gallons</option>
-      <option *ngIf="conversionMetric === 'Gas'" value="cubic meters">Cubic Meters</option>
-      <option *ngIf="conversionMetric === 'Gas'" value="liters">Liters</option>
-    </select>
-
-    <button (click)="convertData()">Convert</button>
-  </div>
-
-  <div *ngIf="convertedData">
-    <h3>Conversion Result</h3>
-    <p><strong>Metric:</strong> {{ convertedData.Metric }}</p>
-    <p><strong>Original Value:</strong> {{ convertedData.OriginalValue }}</p>
-    <p><strong>Converted Value:</strong> {{ convertedData.ConvertedValue }}</p>
-    <p><strong>Target Unit:</strong> {{ convertedData.TargetUnit }}</p>
-  </div>
-  -->
 
   <div class="card mb-4">
     <!-- <div class="card-header">
@@ -298,25 +213,7 @@
     <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
   </div>
 
-  <!-- Example button for modals, if needed
-       <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-         Add Data via Modal
-       </button>
 
-       <div class="modal fade" id="exampleModal" tabindex="-1">
-         <div class="modal-dialog">
-           <div class="modal-content">
-             <div class="modal-header">
-               <h5 class="modal-title">Add Data</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-             </div>
-             <div class="modal-body">
-               < modal form can go here --
-             </div>
-           </div>
-         </div>
-       </div>
-  -->
 
   <button class="btn btn-info mt-3" (click)="goToChat()">Go to AI Chatbot for Emissions related advice</button>
   <br><br>
@@ -326,29 +223,6 @@
 
 
 
-  <!-- @if (userEmissions.length > 0) 
-  {
-    <table class="table table-bordered mt-3">
-      <thead>
-        <tr>
-          <th>Metric</th>
-          <th>Unit</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (emission of userEmissions; track emission) {
-          <tr>
-            <td>{{ emission.metric }}</td>
-            <td>{{ emission.unit }}</td>
-            <td>{{ emission.value }}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  } @else {
-    <p>No emissions data found.</p>
-  } -->
 
   <div class="card mt-4">
     <div class="card-header">
