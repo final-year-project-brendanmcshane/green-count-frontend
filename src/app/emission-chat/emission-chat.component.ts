@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-emission-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule], // ✅ Imports FormsModule for ngModel
+  imports: [CommonModule, FormsModule, RouterModule], // ✅ Imports FormsModule for ngModel
   templateUrl: './emission-chat.component.html',
   styleUrl: './emission-chat.component.css'
 })
@@ -42,4 +43,19 @@ export class EmissionChatComponent {
   goHome(): void {
     this.router.navigate(['/home']);
   }
+
+  toggleMenu(): void {
+    const offcanvas = document.getElementById('offcanvasNav');
+    if (offcanvas) {
+      if (offcanvas.classList.contains('show')) {
+        offcanvas.classList.remove('show');
+      } else {
+        offcanvas.classList.add('show');
+      }
+    }
+  }
+  
+  
+
+  
 }
