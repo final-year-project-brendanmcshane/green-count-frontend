@@ -1,94 +1,83 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DailyEmissionsComponent } from './daily-emissions.component';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
 describe('DailyEmissionsComponent', () => {
   let component: DailyEmissionsComponent;
   let fixture: ComponentFixture<DailyEmissionsComponent>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let router: Router;
+  let navigateSpy: jasmine.Spy;
 
   beforeEach(async () => {
-    // Mocking Router so I can test navigation without actually triggering it
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-
     await TestBed.configureTestingModule({
-      imports: [DailyEmissionsComponent],
-      providers: [
-        { provide: Router, useValue: mockRouter }
-      ]
+      // RouterTestingModule gives us routerLink, router.navigate(), etc.
+      imports: [RouterTestingModule, DailyEmissionsComponent],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(DailyEmissionsComponent);
     component = fixture.componentInstance;
+    router    = TestBed.inject(Router);
+    navigateSpy = spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    // Just confirming that the component loads properly
+    // component instantiation
     expect(component).toBeTruthy();
   });
 
   it('should update vehicle type', () => {
-    // Simulating selecting a different vehicle from the dropdown
-    const event = { target: { value: 'bus' } } as unknown as Event;
-    component.updateVehicleType(event);
+    // simulate dropdown change event
+    component.updateVehicleType({ target: { value: 'bus' } } as unknown as Event);
     expect(component.selectedVehicle()).toBe('bus');
   });
 
   it('should update miles driven', () => {
-    // Testing the miles driven slider
-    const event = { target: { value: '25' } } as unknown as Event;
-    component.updateMilesDriven(event);
+    // simulate slider/input change event
+    component.updateMilesDriven({ target: { value: '25' } } as unknown as Event);
     expect(component.milesDriven()).toBe(25);
   });
 
   it('should update hours worked', () => {
-    // Same idea, but for the hours worked slider
-    const event = { target: { value: '10' } } as unknown as Event;
-    component.updateHoursWorked(event);
+    component.updateHoursWorked({ target: { value: '10' } } as unknown as Event);
     expect(component.hoursWorked()).toBe(10);
   });
 
   it('should update food type', () => {
-    // Checking if food type selection updates properly
-    // Using the first food entry (index 0)
-    const foodIndex = 0;
-    component.updateFoodType(foodIndex, 'vegetables');
-    expect(component.foodEntries()[foodIndex].type).toBe('vegetables');
+    // change first food entry from 'beef' to 'vegetables'
+    component.updateFoodType(0, 'vegetables');
+    expect(component.foodEntries()[0].type).toBe('vegetables');
   });
 
   it('should update food quantity', () => {
-    // Making sure the food quantity slider works
-    // Using the first food entry (index 0)
-    const foodIndex = 0;
-    component.updateFoodQuantity(foodIndex, 3);
-    expect(component.foodEntries()[foodIndex].quantity).toBe(3);
+    // change first food entry quantity to 3
+    component.updateFoodQuantity(0, 3);
+    expect(component.foodEntries()[0].quantity).toBe(3);
   });
 
   it('should add new food entry', () => {
-    // Test adding a new food entry
-    const initialLength = component.foodEntries().length;
+    // initial array length + 1
+    const initialLen = component.foodEntries().length;
     component.addFoodEntry();
-    expect(component.foodEntries().length).toBe(initialLength + 1);
+    expect(component.foodEntries().length).toBe(initialLen + 1);
   });
 
   it('should calculate total emissions correctly', () => {
-    // Manually setting some values to check if the calculation is accurate
-    component.milesDriven.set(10);     // petrol = 0.26473 * 10
-    component.hoursWorked.set(8);      // 0.33378 * 8
+    // set everything manually and compare to fixed formula
     component.selectedVehicle.set('petrol');
-    
-    // Update the first food entry to beef with quantity 2
-    const foodEntries = [{ type: 'beef', quantity: 2 }];
-    component.foodEntries.set(foodEntries);
-
-    const total = component.totalEmissions();
-    expect(total).toBe('59.32');  // Final computed output
+    component.milesDriven.set(10);
+    component.hoursWorked.set(8);
+    component.foodEntries.set([{ type: 'beef', quantity: 2 }]);
+    // 10*0.26473 + 8*0.33378 + 2*27 = ~59.31754 ⇒ "59.32"
+    expect(component.totalEmissions()).toBe('59.32');
   });
 
   it('should navigate to home on goHome()', () => {
-    // Button press should trigger navigation back to home
+    // clicking the home button calls router.navigate(['/home'])
     component.goHome();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/home']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/home']);
   });
 });

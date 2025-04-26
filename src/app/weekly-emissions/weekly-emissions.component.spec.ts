@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WeeklyEmissionsComponent } from './weekly-emissions.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('WeeklyEmissionsComponent', () => {
   let component: WeeklyEmissionsComponent;
@@ -8,7 +9,10 @@ describe('WeeklyEmissionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WeeklyEmissionsComponent]
+      imports: [WeeklyEmissionsComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { params: of({}) } }
+      ]
     })
     .compileComponents();
 
