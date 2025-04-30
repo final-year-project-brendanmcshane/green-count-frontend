@@ -232,7 +232,7 @@
   <br><br>
   <button class="btn btn-warning" (click)="goToDailyEmissions()">Calculate Daily Emissions</button><br>
   <button class="btn btn-primary mt-3" (click)="goToWeeklyEmissions()">Calculate Weekly Emissions</button><br>
-  <button class="btn btn-info mt-3" (click)="loadUserEmissions()">Load My Emissions</button>
+  <button class="btn btn-info mt-3" (click)="loadUserEmissions()">Display My Emissions</button>
 
 
   <br><br>
@@ -322,7 +322,8 @@
         <td>{{ emission.type }}</td>
         <td>{{ emission.value }}</td>
         <td>{{ emission.unit }}</td>
-        <td>{{ emission.emissions }} kg CO2</td>
+        <td>{{ emission.emissions | number:'1.2-2' }} kg CO2</td>
+
       </tr>
       }
     </tbody>
