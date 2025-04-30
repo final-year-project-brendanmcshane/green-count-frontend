@@ -60,8 +60,8 @@ export class EmissionChartComponent implements OnInit {
         );
         const seriesData = emissionsArray.map(item =>
           (item.emissions !== undefined && item.emissions !== null)
-            ? item.emissions
-            : item.value
+          ? parseFloat(item.emissions.toFixed(2))
+          : parseFloat(item.value.toFixed(2))
         );
 
         this.updateChart(this.selectedChartType, categories, seriesData);
