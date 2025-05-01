@@ -98,6 +98,21 @@
         <h3 class="d-inline-block mt-3">Total Daily Emissions: {{ totalEmissions() }} kg CO2</h3>
       </div>
 
+      <!-- Visual Progress Bar -->
+      <div class="mt-4">
+        <label class="fw-bold">Daily Emissions Progress (Cap: 15 kg CO₂)</label>
+        <div class="progress" style="height: 28px;">
+          <div class="progress-bar" role="progressbar" [ngClass]="{
+        'bg-success': totalEmissions() <= 15,
+        'bg-warning': totalEmissions() > 15 && totalEmissions() <= 25,
+        'bg-danger': totalEmissions() > 25
+      }" [style.width.%]="(totalEmissions() / 15) * 100 > 100 ? 100 : (totalEmissions() / 15) * 100">
+            {{ totalEmissions() }} / 15 kg CO₂
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 

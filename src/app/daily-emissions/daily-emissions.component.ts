@@ -2,11 +2,12 @@ import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-daily-emissions',
   standalone: true,
-  imports: [RouterModule, NgFor, NgIf],
+  imports: [RouterModule, NgFor, NgIf, NgClass],
   templateUrl: './daily-emissions.component.html'
 })
 export class DailyEmissionsComponent {
@@ -91,6 +92,7 @@ export class DailyEmissionsComponent {
       (sum, f) => sum + f.quantity * (this.foodEmissions[f.type] || 0),
       0
     );
-    return (vehCO2 + workCO2 + foodCO2).toFixed(2);
+    return parseFloat((vehCO2 + workCO2 + foodCO2).toFixed(2));
+
   });
 }
