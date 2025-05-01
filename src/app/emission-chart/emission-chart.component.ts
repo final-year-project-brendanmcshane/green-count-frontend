@@ -3,7 +3,7 @@ import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { EmissionsService } from '../services/emissions.service';
 
-type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area';
+type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area' | 'step';
 
 @Component({
   selector: 'app-emission-chart',
@@ -19,9 +19,10 @@ type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area';
           <option value="line">Line Chart</option>
           <option value="bar">Bar Chart</option>
           <option value="pie">Pie Chart</option>
-          <option value="donut">Donut Chart</option>
           <option value="spline">Spline Chart</option>
           <option value="area">Area Chart</option>
+          <option value="step">Step Line Chart</option>
+          <option value="donut">Donut Chart</option>
         </select>
       </div>
 
@@ -84,7 +85,7 @@ export class EmissionChartComponent implements OnInit {
   }
 
   updateChart(type: ChartType, categories: string[], seriesData: number[]): void {
-    const chartType = type === 'donut' ? 'pie' : type;
+    const chartType = type === 'donut' ? 'pie' : (type === 'step' ? 'line' : type);
 
     this.chartOptions = {
       chart: { type: chartType },
@@ -105,6 +106,7 @@ export class EmissionChartComponent implements OnInit {
         : undefined,
       plotOptions: {
         line: {
+          step: type === 'step' ? 'left' : undefined,
           dataLabels: {
             enabled: true,
             style: { fontSize: '12px', textOutline: 'none' }
