@@ -31,6 +31,12 @@ type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area' | 'step';
         [options]="chartOptions"
         style="width: 100%; height: 900px; display: block;">
       </highcharts-chart>
+
+      <p class="text-center fw-semibold mt-3" style="font-size: 1.1rem; color: purple;">
+        Last updated: {{ lastUpdated }}
+      </p>
+
+
     }
   `,
   styles: []
@@ -40,8 +46,10 @@ export class EmissionChartComponent implements OnInit {
   chartOptions: Highcharts.Options = {};
   isDataLoaded: boolean = false;
   selectedChartType: ChartType = 'line';
+  lastUpdated: string = '';
 
-  constructor(private emissionsService: EmissionsService) {}
+
+  constructor(private emissionsService: EmissionsService) { }
 
   ngOnInit(): void {
     this.fetchChartData();
@@ -69,6 +77,7 @@ export class EmissionChartComponent implements OnInit {
         );
 
         this.updateChart(this.selectedChartType, categories, seriesData);
+        this.lastUpdated = new Date().toLocaleString();
         this.isDataLoaded = true;
       },
       error => {
@@ -93,16 +102,16 @@ export class EmissionChartComponent implements OnInit {
       subtitle: { text: 'Measured in kg CO₂ equivalent' },
       xAxis: type !== 'pie' && type !== 'donut'
         ? {
-            categories,
-            title: { text: 'Date' },
-            labels: { style: { fontSize: '12px', textOutline: 'none' } }
-          }
+          categories,
+          title: { text: 'Date' },
+          labels: { style: { fontSize: '12px', textOutline: 'none' } }
+        }
         : undefined,
       yAxis: type !== 'pie' && type !== 'donut'
         ? {
-            title: { text: 'Emissions (kg CO₂)' },
-            labels: { style: { fontSize: '12px', textOutline: 'none' } }
-          }
+          title: { text: 'Emissions (kg CO₂)' },
+          labels: { style: { fontSize: '12px', textOutline: 'none' } }
+        }
         : undefined,
       plotOptions: {
         line: {
@@ -141,16 +150,16 @@ export class EmissionChartComponent implements OnInit {
       },
       series: type === 'pie' || type === 'donut'
         ? [{
-            type: 'pie',
-            name: 'Emissions',
-            innerSize: type === 'donut' ? '50%' : undefined,
-            data: categories.map((c, i) => ({ name: c, y: seriesData[i] }))
-          }]
+          type: 'pie',
+          name: 'Emissions',
+          innerSize: type === 'donut' ? '50%' : undefined,
+          data: categories.map((c, i) => ({ name: c, y: seriesData[i] }))
+        }]
         : [{
-            type: chartType as any,
-            name: 'Emissions',
-            data: seriesData
-          }]
+          type: chartType as any,
+          name: 'Emissions',
+          data: seriesData
+        }]
     };
   }
 }

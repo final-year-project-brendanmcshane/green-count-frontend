@@ -115,6 +115,26 @@
   </div>
 </nav>
 
+<!-- Welcome Toast -->
+<div class="position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055; max-width: 600px; width: 100%;">
+  <div class="toast text-bg-warning border-0 fs-4 px-5 py-4 shadow-lg w-100"
+       role="alert"
+       [class.show]="showToast"
+       [class.hide]="!showToast">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="toast-body text-white fw-bold text-center w-100">
+        👋 Welcome back to <span style="color: #fff;">Green Count</span>!
+      </div>
+      <button type="button" class="btn-close btn-close-white ms-3"
+              style="transform: scale(1.5);"
+              aria-label="Close"
+              (click)="showToast = false"></button>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Hero Section -->
 <div class="container mt-4">
   <div class="hero-section mb-4">
@@ -190,7 +210,7 @@
     </div> -->
   </div>
 
-  
+
 
 
 
@@ -256,9 +276,9 @@
         <div class="col-md-4">
           <label class="form-label">Value:</label>
           <input type="number" class="form-control" [(ngModel)]="newEmission.value" placeholder="Enter Value" />
-          <small class="form-text text-muted">{{ valueHint }}</small>  <!-- 🔥 Add this line below the input -->
+          <small class="form-text text-muted">{{ valueHint }}</small> <!-- 🔥 Add this line below the input -->
         </div>
-      
+
       </div>
       <button class="btn btn-primary" (click)="addEmission()">Add Emission</button>
     </div>
@@ -267,9 +287,11 @@
   <app-emission-chart></app-emission-chart>
 
   <div class="alert alert-warning mt-3" role="alert">
-    <strong>Note:</strong> The emission chart above is generated from your saved entries. It visualizes your personal activities and their associated carbon footprint, using trusted emission factors based on the type of data you provided.
+    <strong>Note:</strong> The emission chart above is generated from your saved entries. It visualizes your personal
+    activities and their associated carbon footprint, using trusted emission factors based on the type of data you
+    provided.
   </div>
-  
+
   @if (userEmissions.length > 0) {
   <table class="table table-striped table-bordered mt-3">
     <thead>

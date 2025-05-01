@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
   newEmission: any = { metric: '', unit: '', value: null };  // For new emission data
   private apiUrl: string = 'http://127.0.0.1:5000';  // Define apiUrl here
   valueHint: string = ''; //Used for when user is selecting metrics
+  showToast = true; //Toast for logging in to website
 
 
 
@@ -51,6 +52,10 @@ export class HomeComponent implements OnInit {
     if (darkMode === 'true') {
       document.body.classList.add('dark-mode');
     }
+
+    setTimeout(() => {
+      this.showToast = false;
+    }, 4000);
   }
 
   fetchData(): void {
