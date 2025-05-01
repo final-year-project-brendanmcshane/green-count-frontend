@@ -138,6 +138,27 @@
   </div>
 </div>
 
+<!-- Global Emissions Chart -->
+<div class="card mt-5">
+  <div class="card-header text-white text-center" style="background-color: orange;">
+    <strong>Global Greenhouse Gas Emissions by Sector</strong>
+  </div>
+  <div class="card-body">
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="chartOptions"
+      style="width: 100%; height: 400px; display: block;">
+    </highcharts-chart>
+    <p class="text-muted mt-3 text-center" style="font-size: 0.9rem;">
+      Source: <a href="https://ourworldindata.org/ghg-emissions-by-sector" target="_blank">
+        IPCC via Our World in Data
+      </a>
+    </p>
+  </div>
+</div>
+
+
+
 <div class="text-center mt-4">
   <button class="btn btn-secondary" routerLink="/home">Back to Home</button>
 </div>

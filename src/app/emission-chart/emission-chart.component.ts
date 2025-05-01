@@ -29,7 +29,7 @@ type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area' | 'step';
       <highcharts-chart
         [Highcharts]="Highcharts"
         [options]="chartOptions"
-        style="width: 100%; height: 800px; display: block;">
+        style="width: 100%; height: 900px; display: block;">
       </highcharts-chart>
     }
   `,
