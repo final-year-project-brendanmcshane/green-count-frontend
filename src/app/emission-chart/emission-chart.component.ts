@@ -3,7 +3,7 @@ import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { EmissionsService } from '../services/emissions.service';
 
-type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'bubble';
+type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area';
 
 @Component({
   selector: 'app-emission-chart',
@@ -20,7 +20,8 @@ type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'bubble';
           <option value="bar">Bar Chart</option>
           <option value="pie">Pie Chart</option>
           <option value="donut">Donut Chart</option>
-          <option value="bubble">Bubble Chart</option>
+          <option value="spline">Spline Chart</option>
+          <option value="area">Area Chart</option>
         </select>
       </div>
 
@@ -83,7 +84,7 @@ export class EmissionChartComponent implements OnInit {
   }
 
   updateChart(type: ChartType, categories: string[], seriesData: number[]): void {
-    const chartType = type === 'donut' ? 'pie' : (type === 'bubble' ? 'bubble' : type);
+    const chartType = type === 'donut' ? 'pie' : type;
 
     this.chartOptions = {
       chart: { type: chartType },
@@ -91,8 +92,8 @@ export class EmissionChartComponent implements OnInit {
       subtitle: { text: 'Measured in kg CO₂ equivalent' },
       xAxis: type !== 'pie' && type !== 'donut'
         ? {
-            categories: type === 'bubble' ? undefined : categories,
-            title: { text: type === 'bubble' ? 'Date Index' : 'Date' },
+            categories,
+            title: { text: 'Date' },
             labels: { style: { fontSize: '12px', textOutline: 'none' } }
           }
         : undefined,
@@ -109,21 +110,31 @@ export class EmissionChartComponent implements OnInit {
             style: { fontSize: '12px', textOutline: 'none' }
           }
         },
+        spline: {
+          dataLabels: {
+            enabled: true,
+            style: { fontSize: '12px', textOutline: 'none' }
+          },
+          marker: { radius: 4 }
+        },
         bar: {
           dataLabels: {
             enabled: true,
             style: { fontSize: '12px', textOutline: 'none' }
           }
         },
+        area: {
+          dataLabels: {
+            enabled: true,
+            style: { fontSize: '12px', textOutline: 'none' }
+          },
+          fillOpacity: 0.5
+        },
         pie: {
           innerSize: type === 'donut' ? '50%' : undefined,
           dataLabels: {
             style: { fontSize: '14px', textOutline: 'none' }
           }
-        },
-        bubble: {
-          minSize: 10,
-          maxSize: 40
         }
       },
       series: type === 'pie' || type === 'donut'
@@ -133,18 +144,8 @@ export class EmissionChartComponent implements OnInit {
             innerSize: type === 'donut' ? '50%' : undefined,
             data: categories.map((c, i) => ({ name: c, y: seriesData[i] }))
           }]
-        : type === 'bubble'
-        ? [{
-            type: 'bubble',
-            name: 'Emissions',
-            data: seriesData.map((val, i) => ({
-              x: i,         // Index as X
-              y: val,       // Emission as Y
-              z: val        // Bubble size
-            }))
-          }]
         : [{
-            type: type,
+            type: chartType as any,
             name: 'Emissions',
             data: seriesData
           }]
