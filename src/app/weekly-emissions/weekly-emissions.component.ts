@@ -2,11 +2,12 @@ import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-weekly-emissions',
   standalone: true,
-  imports: [RouterModule, NgFor, NgIf],
+  imports: [RouterModule, NgFor, NgIf, NgClass],
   templateUrl: './weekly-emissions.component.html',
   styleUrls: ['./weekly-emissions.component.css'] // Optional: Add CSS file if needed later
 })

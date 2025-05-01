@@ -98,6 +98,21 @@
         <h3 class="d-inline-block mt-3">Total Weekly Emissions: {{ totalEmissions() }} kg CO2</h3>
       </div>
 
+      <!-- Weekly Emissions Progress Bar -->
+      <div class="mt-4">
+        <h5 class="text-center">Weekly Target: 105 kg CO₂</h5>
+        <div class="progress" style="height: 30px;">
+          <div class="progress-bar" role="progressbar" [ngClass]="{
+        'bg-success': +totalEmissions() <= 70,
+        'bg-warning': +totalEmissions() > 70 && +totalEmissions() <= 105,
+        'bg-danger': +totalEmissions() > 105
+      }" [style.width.%]="(+totalEmissions() / 105) * 100 > 100 ? 100 : (+totalEmissions() / 105) * 100">
+            {{ totalEmissions() }} kg CO₂
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 
