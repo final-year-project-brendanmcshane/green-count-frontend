@@ -310,6 +310,20 @@ export class HomeComponent implements OnInit {
     }
   }
 
+
+  goToInformation(): void {
+    this.router.navigate(['/information']);
+  }
+  
+  goToFoodEmissions(): void {
+    this.router.navigate(['/food-emissions']);
+  }
+  
+  goToSettings(): void {
+    this.router.navigate(['/settings']);
+  }
+  
+
   
 
 
