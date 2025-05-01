@@ -1,1 +1,38 @@
-<p>food-emissions works!</p>
+<div class="card mb-4">
+    <div class="card-header">
+      <h3>Calculate Food Impact</h3>
+    </div>
+    <div class="card-body">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          <label class="form-label">Food Item:</label>
+          <select class="form-select" [(ngModel)]="foodItem">
+            <option value="beef">Beef</option>
+            <option value="chicken">Chicken</option>
+            <option value="pork">Pork</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="dairy">Dairy</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Weight (kg):</label>
+          <input type="number" class="form-control" [(ngModel)]="foodWeight" placeholder="Enter weight in kg" />
+        </div>
+      </div>
+      <button class="btn btn-success mt-3" (click)="convertFoodImpact()">Calculate Food Impact</button>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary" role="alert">
+    <strong>Note:</strong> The food emissions data is based on average CO₂ emissions per kilogram for different food types.
+    I’m using typical industry values and environmental research studies that show the relative emissions impact of foods like beef, chicken, pork, vegetables, and dairy.
+    The values are hardcoded in the backend for simplicity, but they are based on real-world average estimates from trusted environmental sources.
+  </div>
+  
+
+  <div *ngIf="foodEmissions !== null" class="alert alert-info">
+    <h3>Food Impact Result</h3>
+    <p><strong>Food Item:</strong> {{ foodItem }}</p>
+    <p><strong>Weight:</strong> {{ foodWeight }} kg</p>
+    <p><strong>CO2 Emissions:</strong> {{ foodEmissions }} kg</p>
+  </div>
