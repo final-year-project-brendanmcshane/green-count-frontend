@@ -3,6 +3,8 @@ import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { EmissionsService } from '../services/emissions.service';
 
+type ChartType = 'line' | 'bar' | 'pie' | 'donut';
+
 @Component({
   selector: 'app-emission-chart',
   standalone: true,
@@ -17,6 +19,7 @@ import { EmissionsService } from '../services/emissions.service';
           <option value="line">Line Chart</option>
           <option value="bar">Bar Chart</option>
           <option value="pie">Pie Chart</option>
+          <option value="donut">Donut Chart</option>
         </select>
       </div>
 
@@ -33,7 +36,7 @@ export class EmissionChartComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   isDataLoaded: boolean = false;
-  selectedChartType: 'line' | 'bar' | 'pie' = 'line'; // Default chart type
+  selectedChartType: ChartType = 'line';
 
   constructor(private emissionsService: EmissionsService) {}
 
@@ -44,8 +47,6 @@ export class EmissionChartComponent implements OnInit {
   fetchChartData(): void {
     this.emissionsService.getUserEmissions().subscribe(
       (response: any) => {
-        console.log('Response from getUserEmissions:', response);
-
         let emissionsArray: any[] = [];
         if (Array.isArray(response)) {
           emissionsArray = response;
@@ -59,9 +60,9 @@ export class EmissionChartComponent implements OnInit {
           item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Unknown'
         );
         const seriesData = emissionsArray.map(item =>
-          (item.emissions !== undefined && item.emissions !== null)
-          ? parseFloat(item.emissions.toFixed(2))
-          : parseFloat(item.value.toFixed(2))
+          item.emissions !== undefined && item.emissions !== null
+            ? parseFloat(item.emissions.toFixed(2))
+            : parseFloat(item.value.toFixed(2))
         );
 
         this.updateChart(this.selectedChartType, categories, seriesData);
@@ -75,25 +76,25 @@ export class EmissionChartComponent implements OnInit {
   }
 
   changeChartType(event: Event): void {
-    const selectedValue = (event.target as HTMLSelectElement).value as 'line' | 'bar' | 'pie';
+    const selectedValue = (event.target as HTMLSelectElement).value as ChartType;
     this.selectedChartType = selectedValue;
-    this.fetchChartData(); // Re-fetch and update chart
+    this.fetchChartData();
   }
 
-  updateChart(type: 'line' | 'bar' | 'pie', categories: string[], seriesData: number[]): void {
+  updateChart(type: ChartType, categories: string[], seriesData: number[]): void {
     this.chartOptions = {
-      chart: { type: type },
+      chart: { type: type === 'donut' ? 'pie' : type },
       title: { text: 'Carbon Emissions Breakdown by Date' },
-      subtitle: { text: 'Measured in kg CO2 equivalent' },
-      xAxis: { 
-        categories: categories, 
+      subtitle: { text: 'Measured in kg CO₂ equivalent' },
+      xAxis: {
+        categories: type !== 'pie' && type !== 'donut' ? categories : undefined,
         title: { text: 'Date' },
         labels: { style: { fontSize: '12px', textOutline: 'none' } }
       },
-      yAxis: { 
-        title: { text: 'Emissions (kg CO2)' },
+      yAxis: type !== 'pie' && type !== 'donut' ? {
+        title: { text: 'Emissions (kg CO₂)' },
         labels: { style: { fontSize: '12px', textOutline: 'none' } }
-      },
+      } : undefined,
       plotOptions: {
         line: {
           dataLabels: {
@@ -107,15 +108,25 @@ export class EmissionChartComponent implements OnInit {
             style: { fontSize: '12px', textOutline: 'none' }
           }
         },
-        pie: { 
-          dataLabels: { 
-            style: { fontSize: '14px', textOutline: 'none' } 
-          } 
+        pie: {
+          innerSize: type === 'donut' ? '50%' : undefined,
+          dataLabels: {
+            style: { fontSize: '14px', textOutline: 'none' }
+          }
         }
       },
-      series: type === 'pie'
-        ? [{ type: 'pie', name: 'Emissions', data: categories.map((c, i) => ({ name: c, y: seriesData[i] })) }]
-        : [{ type: type, name: 'Emissions', data: seriesData }]
+      series: (type === 'pie' || type === 'donut')
+        ? [{
+            type: 'pie',
+            name: 'Emissions',
+            innerSize: type === 'donut' ? '50%' : undefined,
+            data: categories.map((c, i) => ({ name: c, y: seriesData[i] }))
+          }]
+        : [{
+            type: type,
+            name: 'Emissions',
+            data: seriesData
+          }]
     };
   }
 }
