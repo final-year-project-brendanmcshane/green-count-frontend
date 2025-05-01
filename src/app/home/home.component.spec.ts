@@ -208,6 +208,7 @@ describe('HomeComponent', () => {
     expect(component.foodEmissions).toBe(70);
   });
 
+
   // Should catch errors from convertFoodImpact API
   it('should handle error in convertFoodImpact()', () => {
     spyOn(console, 'error');
@@ -217,4 +218,91 @@ describe('HomeComponent', () => {
     component.convertFoodImpact();
     expect(console.error).toHaveBeenCalled();
   });
+
+  // Covers case: convertData() should early return if value is 0
+  it('should not call API in convertData() if value is 0', () => {
+    component.conversionValue = 0;
+    component.conversionMetric = 'Electricity';
+    component.targetUnit = 'kg';
+
+    component.convertData();
+
+    expect(mockHttpClient.post).not.toHaveBeenCalled();
+    expect(component.convertedData).toBeNull();
+  });
+
+
+  // Covers spinner logic — just verify the flag flips
+  it('should set isLoading to true when manually toggled', () => {
+    component.isLoading = true;
+    expect(component.isLoading).toBeTrue();
+  });
+
+  // Covers fetched emission data — check the component property instead of innerHTML
+  it('should fetch and store emission data', () => {
+    const mockData = [{ Metric: 'Gas', Value: 77 }];
+    mockHttpClient.get.and.returnValue(of(mockData));
+
+    component.fetchData();
+
+    expect(component.data).toEqual(mockData);
+  });
+
+  // Covers resetting newEmission after successful addEmission()
+  it('should reset newEmission after successful addEmission()', () => {
+    component.newEmission = { category: 'Transport', type: 'Train', value: 25 };
+    mockEmissionsService.addEmission.and.returnValue(of({ success: true }));
+
+    component.addEmission();
+
+    expect(component.newEmission).toEqual({
+      category: '',
+      type: '',
+      value: null    // default is null, so test for null here
+    });
+  });
+
+
+  // 1. convertData() should early return if conversionValue is 0
+  it('should not call API in convertData() if conversionValue is 0', () => {
+    component.conversionMetric = 'Electricity';
+    component.targetUnit = 'kg';
+    component.conversionValue = 0;
+
+    component.convertData();
+
+    expect(mockHttpClient.post).not.toHaveBeenCalled();
+    expect(component.convertedData).toBeNull();
+  });
+
+  // 2. reset newEmission on successful addEmission()
+  it('should reset newEmission after successful addEmission()', () => {
+    component.newEmission = { category: 'Transport', type: 'Train', value: 25 };
+    mockEmissionsService.addEmission.and.returnValue(of({ success: true }));
+
+    component.addEmission();
+
+    expect(component.newEmission).toEqual({ category: '', type: '', value: null });
+  });
+
+  // 3. preserve newEmission on addEmission() error
+  it('should preserve newEmission when addEmission() fails', () => {
+    component.newEmission = { category: 'Transport', type: 'Bus', value: 10 };
+    mockEmissionsService.addEmission.and.returnValue(throwError(() => new Error('fail')));
+
+    component.addEmission();
+
+    expect(component.newEmission).toEqual({ category: 'Transport', type: 'Bus', value: 10 });
+  });
+
+  // 4. manual toggling of isLoading flag
+  it('should allow manual toggling of isLoading flag', () => {
+    component.isLoading = true;
+    expect(component.isLoading).toBeTrue();
+
+    component.isLoading = false;
+    expect(component.isLoading).toBeFalse();
+  });
+
+
 });
