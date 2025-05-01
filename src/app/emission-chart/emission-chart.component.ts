@@ -3,7 +3,7 @@ import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { EmissionsService } from '../services/emissions.service';
 
-type ChartType = 'line' | 'bar' | 'pie' | 'donut';
+type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'bubble';
 
 @Component({
   selector: 'app-emission-chart',
@@ -20,13 +20,14 @@ type ChartType = 'line' | 'bar' | 'pie' | 'donut';
           <option value="bar">Bar Chart</option>
           <option value="pie">Pie Chart</option>
           <option value="donut">Donut Chart</option>
+          <option value="bubble">Bubble Chart</option>
         </select>
       </div>
 
       <highcharts-chart
         [Highcharts]="Highcharts"
         [options]="chartOptions"
-        style="width: 100%; height: 400px; display: block;">
+        style="width: 100%; height: 800px; display: block;">
       </highcharts-chart>
     }
   `,
@@ -82,19 +83,25 @@ export class EmissionChartComponent implements OnInit {
   }
 
   updateChart(type: ChartType, categories: string[], seriesData: number[]): void {
+    const chartType = type === 'donut' ? 'pie' : (type === 'bubble' ? 'bubble' : type);
+
     this.chartOptions = {
-      chart: { type: type === 'donut' ? 'pie' : type },
+      chart: { type: chartType },
       title: { text: 'Carbon Emissions Breakdown by Date' },
       subtitle: { text: 'Measured in kg CO₂ equivalent' },
-      xAxis: {
-        categories: type !== 'pie' && type !== 'donut' ? categories : undefined,
-        title: { text: 'Date' },
-        labels: { style: { fontSize: '12px', textOutline: 'none' } }
-      },
-      yAxis: type !== 'pie' && type !== 'donut' ? {
-        title: { text: 'Emissions (kg CO₂)' },
-        labels: { style: { fontSize: '12px', textOutline: 'none' } }
-      } : undefined,
+      xAxis: type !== 'pie' && type !== 'donut'
+        ? {
+            categories: type === 'bubble' ? undefined : categories,
+            title: { text: type === 'bubble' ? 'Date Index' : 'Date' },
+            labels: { style: { fontSize: '12px', textOutline: 'none' } }
+          }
+        : undefined,
+      yAxis: type !== 'pie' && type !== 'donut'
+        ? {
+            title: { text: 'Emissions (kg CO₂)' },
+            labels: { style: { fontSize: '12px', textOutline: 'none' } }
+          }
+        : undefined,
       plotOptions: {
         line: {
           dataLabels: {
@@ -113,14 +120,28 @@ export class EmissionChartComponent implements OnInit {
           dataLabels: {
             style: { fontSize: '14px', textOutline: 'none' }
           }
+        },
+        bubble: {
+          minSize: 10,
+          maxSize: 40
         }
       },
-      series: (type === 'pie' || type === 'donut')
+      series: type === 'pie' || type === 'donut'
         ? [{
             type: 'pie',
             name: 'Emissions',
             innerSize: type === 'donut' ? '50%' : undefined,
             data: categories.map((c, i) => ({ name: c, y: seriesData[i] }))
+          }]
+        : type === 'bubble'
+        ? [{
+            type: 'bubble',
+            name: 'Emissions',
+            data: seriesData.map((val, i) => ({
+              x: i,         // Index as X
+              y: val,       // Emission as Y
+              z: val        // Bubble size
+            }))
           }]
         : [{
             type: type,
