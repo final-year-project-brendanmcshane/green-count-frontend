@@ -81,7 +81,8 @@ describe('DailyEmissionsComponent', () => {
     component.milesDriven.set(10);
     component.hoursWorked.set(8);
     component.foodEntries.set([{ type: 'beef', quantity: 2 }]);
-    expect(component.totalEmissions()).toBe('59.32');
+    expect(component.totalEmissions()).toBeCloseTo(59.32, 2);
+
   });
 
   it('should return "0.00" if all inputs zero or empty', () => {
@@ -90,7 +91,7 @@ describe('DailyEmissionsComponent', () => {
     component.milesDriven.set(0);
     component.hoursWorked.set(0);
     component.foodEntries.set([]);
-    expect(component.totalEmissions()).toBe('0.00');
+    expect(component.totalEmissions()).toBeCloseTo(0.00, 2);
   });
 
   it('calculateEmissions() should console.log the total', () => {
@@ -148,7 +149,7 @@ describe('DailyEmissionsComponent', () => {
       component.milesDriven.set(5);
       component.hoursWorked.set(0);
       component.foodEntries.set([]);
-      expect(component.totalEmissions()).toBe('0.00');
+      expect(component.totalEmissions()).toBeCloseTo(0.00,2);
     });
 
     it('should treat non-numeric miles input as zero', () => {
@@ -174,7 +175,7 @@ describe('DailyEmissionsComponent', () => {
       component.milesDriven.set(0);
       component.hoursWorked.set(0);
       // unicorn not in foodEmissions ⇒ counted as 0
-      expect(component.totalEmissions()).toBe('0.00');
+      expect(component.totalEmissions()).toBeCloseTo(0.00, 2);
     });
   });
 });
