@@ -74,6 +74,28 @@
     background-color: #e6e6e6;
     /* a subtle color change on hover */
   }
+
+  .hero-content-box {
+    background-color: rgba(255, 193, 7, 0.85);
+    /* Bootstrap warning yellow with more opacity */
+    padding: 2.5rem 2rem;
+    border-radius: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    color: #343a40;
+    /* darker text for readability on yellow */
+  }
+
+
+  .hero-content-box h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+
+  .hero-content-box p {
+    font-size: 1.1rem;
+  }
 </style>
 
 <!-- Start of Green Count Home Component -->
@@ -146,12 +168,13 @@
       <img src="sample-logo.jpg" alt="GreenCount Logo" class="img-fluid" style="max-width: 150px;" />
     </div>
 
-    <h1 class="display-4 fw-bold">Welcome to Green Count</h1>
+    <div class="hero-content-box">
+      <h1>Welcome to Green Count</h1>
+      <p>Monitor your carbon footprint and take actionable steps to reduce it.</p>
+    </div>
 
 
-    <p class="fs-5">
-      Monitor your carbon footprint and take actionable steps to reduce it.
-    </p>
+
     <button class="btn btn-light btn-hero" (click)="goToDailyEmissions()">
       Calculate Your Daily Emissions
     </button>
@@ -206,7 +229,7 @@
 
   <!-- This is here for aesthetic purposes, it adds subtle lines before buttons below -->
   <div class="card mb-4">
-    
+
   </div>
 
 
@@ -218,40 +241,47 @@
       Quick Navigation
     </div>
     <div class="card-body text-center d-grid gap-3">
-  
-      <button class="btn btn-outline-info fw-bold" style="background-color: rgba(23, 162, 184, 0.1);" (click)="goToChat()">
+
+      <button class="btn btn-outline-info fw-bold" style="background-color: rgba(23, 162, 184, 0.1);"
+        (click)="goToChat()">
         💬 Go to AI Chatbot for Emissions Advice
       </button>
-  
-      <button class="btn btn-outline-warning fw-bold" style="background-color: rgba(255, 193, 7, 0.1);" (click)="goToDailyEmissions()">
+
+      <button class="btn btn-outline-warning fw-bold" style="background-color: rgba(255, 193, 7, 0.1);"
+        (click)="goToDailyEmissions()">
         📊 Calculate Daily Emissions
       </button>
-  
-      <button class="btn btn-outline-primary fw-bold" style="background-color: rgba(0, 123, 255, 0.1);" (click)="goToWeeklyEmissions()">
+
+      <button class="btn btn-outline-primary fw-bold" style="background-color: rgba(0, 123, 255, 0.1);"
+        (click)="goToWeeklyEmissions()">
         📅 Calculate Weekly Emissions
       </button>
-  
-      <button class="btn btn-outline-success fw-bold" style="background-color: rgba(40, 167, 69, 0.1);" (click)="loadUserEmissions()">
+
+      <button class="btn btn-outline-success fw-bold" style="background-color: rgba(40, 167, 69, 0.1);"
+        (click)="loadUserEmissions()">
         📋 Display My Emissions
       </button>
-  
-      <button class="btn btn-outline-secondary fw-bold" style="background-color: rgba(108, 117, 125, 0.1);" (click)="goToInformation()">
+
+      <button class="btn btn-outline-secondary fw-bold" style="background-color: rgba(108, 117, 125, 0.1);"
+        (click)="goToInformation()">
         📘 Go to Information
       </button>
-  
-      <button class="btn btn-outline-danger fw-bold" style="background-color: rgba(220, 53, 69, 0.1);" (click)="goToFoodEmissions()">
+
+      <button class="btn btn-outline-danger fw-bold" style="background-color: rgba(220, 53, 69, 0.1);"
+        (click)="goToFoodEmissions()">
         🥗 Go to Food Emissions
       </button>
-  
-      <button class="btn btn-outline-dark fw-bold" style="background-color: rgba(52, 58, 64, 0.1);" (click)="goToSettings()">
+
+      <button class="btn btn-outline-dark fw-bold" style="background-color: rgba(52, 58, 64, 0.1);"
+        (click)="goToSettings()">
         ⚙️ Go to Settings
       </button>
-  
+
     </div>
   </div>
-  
-  
-  
+
+
+
 
   <br><br>
 
