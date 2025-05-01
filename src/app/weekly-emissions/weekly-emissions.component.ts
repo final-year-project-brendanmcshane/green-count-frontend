@@ -1,15 +1,14 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgClass } from '@angular/common';
 import { Router } from '@angular/router';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-weekly-emissions',
   standalone: true,
   imports: [RouterModule, NgFor, NgIf, NgClass],
   templateUrl: './weekly-emissions.component.html',
-  styleUrls: ['./weekly-emissions.component.css'] // Optional: Add CSS file if needed later
+  styleUrls: ['./weekly-emissions.component.css']
 })
 export class WeeklyEmissionsComponent {
 
@@ -28,8 +27,8 @@ export class WeeklyEmissionsComponent {
   };
 
   selectedVehicle = signal<string>('petrol');
-  milesDriven = signal<number>(70); // default weekly
-  hoursWorked = signal<number>(40); // default weekly
+  milesDriven = signal<number>(70);
+  hoursWorked = signal<number>(40);
 
   foodEntries = signal<{ type: string; quantity: number }[]>([
     { type: 'beef', quantity: 7 }
@@ -75,11 +74,7 @@ export class WeeklyEmissionsComponent {
   toggleMenu(): void {
     const offcanvas = document.getElementById('offcanvasNav');
     if (offcanvas) {
-      if (offcanvas.classList.contains('show')) {
-        offcanvas.classList.remove('show');
-      } else {
-        offcanvas.classList.add('show');
-      }
+      offcanvas.classList.toggle('show');
     }
   }
 
@@ -89,6 +84,13 @@ export class WeeklyEmissionsComponent {
     const foodCO2 = this.foodEntries().reduce(
       (sum, f) => sum + f.quantity * (this.foodEmissions[f.type] || 0), 0
     );
-    return (vehCO2 + workCO2 + foodCO2).toFixed(2);
+    return parseFloat((vehCO2 + workCO2 + foodCO2).toFixed(2));
   });
+
+  emissionsBadgeClass(): string {
+    const total = this.totalEmissions();
+    if (total <= 105) return 'bg-success text-white';       // green
+    if (total <= 150) return 'bg-warning text-dark';        // yellow
+    return 'bg-danger text-white';                          // red
+  }
 }

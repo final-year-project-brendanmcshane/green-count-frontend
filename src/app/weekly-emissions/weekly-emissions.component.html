@@ -112,6 +112,21 @@
         </div>
       </div>
 
+      <!-- Badge Message -->
+      <div class="text-center mt-3">
+        <span class="badge fs-5 px-4 py-2" [ngClass]="emissionsBadgeClass()">
+          <ng-container *ngIf="+totalEmissions() <= 70">
+            Great job! You're well below the weekly goal.
+          </ng-container>
+          <ng-container *ngIf="+totalEmissions() > 70 && +totalEmissions() <= 105">
+            Caution: You’re approaching your weekly emissions cap.
+          </ng-container>
+          <ng-container *ngIf="+totalEmissions() > 105">
+            Warning: You’ve exceeded the recommended weekly limit.
+          </ng-container>
+        </span>
+      </div>
+
 
     </div>
   </div>

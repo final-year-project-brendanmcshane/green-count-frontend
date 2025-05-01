@@ -95,4 +95,12 @@ export class DailyEmissionsComponent {
     return parseFloat((vehCO2 + workCO2 + foodCO2).toFixed(2));
 
   });
+
+  emissionsBadgeClass = computed(() => {
+    const total = this.totalEmissions();
+    if (total <= 15) return 'bg-success';
+    if (total <= 25) return 'bg-warning';
+    return 'bg-danger';
+  });
+  
 }
