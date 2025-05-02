@@ -42,11 +42,15 @@ Run tests and generate a coverage report:
 ng test --code-coverage
 ```
 Output summary:
- ✅ All 84 tests pass
+ ✅ All 104 tests pass
  📈 Coverage:
- - Statements: 72.08%
- - Branches: 50%
- - Functions: 71.7%
- - Lines: 71.94%
+ - Statements: 82.82%
+ - Branches: 59.67%
+ - Functions: 81.14%
+ - Lines: 81.23%
 
 
+### Screencast :
+For a quick walkthrough of how the Green Count app works, check out this screencast where I demonstrate using the website:
+
+[Watch the Green Count Screencast](https://www.youtube.com/watch?v=UW_Tw9hZBjc)
