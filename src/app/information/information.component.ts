@@ -18,7 +18,8 @@ export class InformationComponent {
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'pie',
-      height: 410
+      height: 420,
+      
     },
     title: {
       text: 'Global GHG Emissions by Sector'
