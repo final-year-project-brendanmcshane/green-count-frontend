@@ -17,6 +17,7 @@ export class DailyEmissionsComponent {
   vehicleTypes = ['diesel', 'petrol', 'hybrid', 'taxi', 'bus', 'rail', 'flight', 'motorbike'];
   foodTypes = ['beef', 'chicken', 'vegetables', 'pork', 'dairy'];
 
+  // List of transport types with corresponding CO₂ emission factors (kg CO₂ per mile)
   vehicleEmissions: Record<string, number> = {
     diesel: 0.27334, petrol: 0.26473, hybrid: 0.20288, taxi: 0.14861,
     bus: 0.10846, rail: 0.03546, flight: 0.27257, motorbike: 0.11367
@@ -85,6 +86,7 @@ export class DailyEmissionsComponent {
     }
   }
 
+  // Dynamically calculates total daily emissions from transport, work, and food
   totalEmissions = computed(() => {
     const vehCO2 = this.milesDriven() * (this.vehicleEmissions[this.selectedVehicle()] || 0);
     const workCO2 = this.hoursWorked() * 0.33378;
@@ -96,6 +98,7 @@ export class DailyEmissionsComponent {
 
   });
 
+  // Assigns a badge class based on total emissions level for color-coded feedback
   emissionsBadgeClass = computed(() => {
     const total = this.totalEmissions();
     if (total <= 15) return 'bg-success';

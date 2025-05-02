@@ -3,6 +3,7 @@ import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { EmissionsService } from '../services/emissions.service';
 
+// Define accepted chart types
 type ChartType = 'line' | 'bar' | 'pie' | 'donut' | 'spline' | 'area' | 'step';
 
 @Component({
@@ -87,6 +88,7 @@ export class EmissionChartComponent implements OnInit {
     );
   }
 
+  // Update chart type and re-fetch data to re-render the chart
   changeChartType(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value as ChartType;
     this.selectedChartType = selectedValue;
@@ -95,7 +97,7 @@ export class EmissionChartComponent implements OnInit {
 
   updateChart(type: ChartType, categories: string[], seriesData: number[]): void {
     const chartType = type === 'donut' ? 'pie' : (type === 'step' ? 'line' : type);
-
+    // Chart config dynamically built based on selected type and data
     this.chartOptions = {
       chart: { type: chartType },
       title: { text: 'Carbon Emissions Breakdown by Date' },
