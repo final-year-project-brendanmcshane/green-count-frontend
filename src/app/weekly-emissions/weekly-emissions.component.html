@@ -59,7 +59,7 @@
       <!-- Miles Driven (Weekly) -->
       <div class="mb-3">
         <label class="form-label">Miles Driven This Week:</label>
-        <input type="range" class="form-range w-50" min="0" max="700" [value]="milesDriven()"
+        <input type="range" class="form-range w-50" min="0" max="700" step="0.1" [value]="milesDriven()"
           (input)="updateMilesDriven($event)" />
         <span class="ms-2 fw-bold">{{ milesDriven() }} miles</span>
       </div>
@@ -67,7 +67,7 @@
       <!-- Hours Worked (Weekly) -->
       <div class="mb-3">
         <label class="form-label">Hours Worked This Week:</label>
-        <input type="range" class="form-range w-50" min="0" max="168" [value]="hoursWorked()"
+        <input type="range" class="form-range w-50" min="0" max="168" step="0.5" [value]="hoursWorked()"
           (input)="updateHoursWorked($event)" />
         <span class="ms-2 fw-bold">{{ hoursWorked() }} hours</span>
       </div>
@@ -80,7 +80,7 @@
         </select>
 
         <label class="form-label mt-2">Food Consumed This Week (kg):</label>
-        <input type="range" class="form-range w-50" min="0" max="35" [value]="food.quantity"
+        <input type="range" class="form-range w-50" min="0" max="35" step="0.1"  [value]="food.quantity"
           (input)="updateFoodQuantity(i, $any($event.target).value)" />
         <span class="ms-2 fw-bold">{{ food.quantity }} kg</span>
 
