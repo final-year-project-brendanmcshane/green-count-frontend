@@ -14,6 +14,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 export class InformationComponent {
   Highcharts: typeof Highcharts = Highcharts;
 
+  // Highcharts configuration for displaying a pie chart of global emissions
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'pie',
@@ -66,7 +67,7 @@ export class InformationComponent {
     }]
   };
 
-
+  // Toggles the visibility of the sidebar menu for navigation
   toggleMenu(): void {
     const offcanvas = document.getElementById('offcanvasNav');
     if (offcanvas) {

@@ -17,6 +17,8 @@ export class WeeklyEmissionsComponent {
   vehicleTypes = ['diesel', 'petrol', 'hybrid', 'taxi', 'bus', 'rail', 'flight', 'motorbike'];
   foodTypes = ['beef', 'chicken', 'vegetables', 'pork', 'dairy'];
 
+
+  // Emission factors used to calculate CO₂ output for selected vehicle types and food items
   vehicleEmissions: Record<string, number> = {
     diesel: 0.27334, petrol: 0.26473, hybrid: 0.20288, taxi: 0.14861,
     bus: 0.10846, rail: 0.03546, flight: 0.27257, motorbike: 0.11367
@@ -78,6 +80,7 @@ export class WeeklyEmissionsComponent {
     }
   }
 
+  // Computes the total weekly emissions based on transport, work hours, and food consumption
   totalEmissions = computed(() => {
     const vehCO2 = this.milesDriven() * (this.vehicleEmissions[this.selectedVehicle()] || 0);
     const workCO2 = this.hoursWorked() * 0.33378;
@@ -87,6 +90,7 @@ export class WeeklyEmissionsComponent {
     return parseFloat((vehCO2 + workCO2 + foodCO2).toFixed(2));
   });
 
+  // Returns a Bootstrap class based on total emissions to visually indicate impact severity
   emissionsBadgeClass(): string {
     const total = this.totalEmissions();
     if (total <= 105) return 'bg-success text-white';       // green

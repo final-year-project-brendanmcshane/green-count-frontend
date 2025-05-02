@@ -8,7 +8,7 @@ export interface EmissionData {
   value: number;
   unit?: string;      // Optional as it will be determined by backend
 }
-
+// Handles HTTP requests related to user emission data with authentication headers
 @Injectable({
   providedIn: 'root'
 })

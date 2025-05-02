@@ -23,7 +23,7 @@ export class AppComponent {
   }
 
   addData(): void {
-    const newData = { id: 2 };  // Replace with actual data
+    const newData = { id: 2 };  
     this.dataService.addData(newData).subscribe(response => {
       console.log('Data added:', response);
     });

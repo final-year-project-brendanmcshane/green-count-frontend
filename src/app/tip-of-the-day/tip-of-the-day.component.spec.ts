@@ -6,6 +6,7 @@ describe('TipOfTheDayComponent', () => {
   let component: TipOfTheDayComponent;
   let fixture: ComponentFixture<TipOfTheDayComponent>;
 
+  // Configure the testing module and create a fresh instance of the component before each test
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TipOfTheDayComponent],
@@ -26,6 +27,7 @@ describe('TipOfTheDayComponent', () => {
     expect(component.getNewTip).toHaveBeenCalled();
   });
 
+  // Ensures getNewTip goes through each tip once before repeating any, simulating tip rotation
   it('getNewTip cycles through all tips without repetition then resets', () => {
     const tips: any[] = (component as any).tips;
     // wipe out any tip that ran in ngOnInit
@@ -75,6 +77,7 @@ describe('TipOfTheDayComponent', () => {
     expect(impactEl.textContent).toContain('Impact: Low');
   });
 
+  // Simulates a user clicking the button and confirms the method to load a new tip is triggered
   it('clicking "Show another tip" button triggers getNewTip()', () => {
     spyOn(component, 'getNewTip');
     const btn = fixture.debugElement.query(By.css('button')).nativeElement;

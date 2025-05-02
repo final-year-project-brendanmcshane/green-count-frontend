@@ -80,8 +80,9 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
+  // Handles user login and redirects to home if successful
   onSubmit(): void {
     this.authService.login(this.email, this.password).subscribe({
       next: (response: AuthResponse) => {
@@ -97,8 +98,9 @@ export class LoginComponent {
         console.error('Login failed:', error);
       }
     });
-}
-
+  }
+  
+  // Allows quick signup using same form inputs and redirects back to login
   onSignup(): void {
     this.authService.signup(this.email, this.password).subscribe({
       next: (response: AuthResponse) => {

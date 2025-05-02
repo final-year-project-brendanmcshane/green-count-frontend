@@ -10,14 +10,17 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  // Sends user credentials to backend to create a new account
   signup(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/signup`, { email, password });
   }
 
+  // Sends user credentials to backend to log in and receive a token
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/login`, { email, password });
   }
-
+  
+  // Stores the token and user ID in local storage to persist session
   setUserSession(token: string, userId: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId);

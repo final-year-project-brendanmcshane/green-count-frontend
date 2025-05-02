@@ -15,12 +15,15 @@ export class FoodEmissionsComponent {
   constructor(private router: Router) {}
 
 
-
+  // Stores the selected food item, defaulting to 'beef'
   foodItem: string = 'beef';
+  // User-provided weight input (in kg) for the selected food item
   foodWeight: number | null = null;
+  // Holds the calculated emissions value (in kg CO₂)
   foodEmissions: number | null = null;
 
   convertFoodImpact(): void {
+    // Emissions factors in kg CO₂ per kg of food
     const emissionsFactors: Record<string, number> = {
       beef: 27.0,
       chicken: 6.9,
@@ -29,6 +32,7 @@ export class FoodEmissionsComponent {
       dairy: 3.0
     };
 
+    // Calculate and round emissions if weight is valid
     const factor = emissionsFactors[this.foodItem];
     this.foodEmissions = this.foodWeight ? +(this.foodWeight * factor).toFixed(2) : null;
   }

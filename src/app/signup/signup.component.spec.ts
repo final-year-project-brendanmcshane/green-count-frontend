@@ -35,6 +35,7 @@ describe('SignupComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Verifies that the signup method is called with correct credentials
   it('should call signup on submit', () => {
     const spy = spyOn(component['authService'], 'signup').and.callThrough();
     component.email = 'test@example.com';

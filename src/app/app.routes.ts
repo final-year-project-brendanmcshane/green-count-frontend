@@ -11,12 +11,12 @@ import { FoodEmissionsComponent } from './food-emissions/food-emissions.componen
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' }, // Default to login
     { path: 'home', component: HomeComponent }, // Add home component route
-    { path: 'signup', component: SignupComponent },
-    { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignupComponent }, // Sign in component
+    { path: 'login', component: LoginComponent }, // Log in component
     { path: 'chat', component: EmissionChatComponent }, // ✅ New Route for AI Chat
     { path: 'daily-emissions', component: DailyEmissionsComponent },
-    {path: 'settings', component: SettingsComponent},
-    { path: 'information', component: InformationComponent },
-    { path: 'weekly-emissions', component: WeeklyEmissionsComponent },
-    { path: 'food-emissions', component: FoodEmissionsComponent }
+    {path: 'settings', component: SettingsComponent}, // Settings component
+    { path: 'information', component: InformationComponent }, //Information component
+    { path: 'weekly-emissions', component: WeeklyEmissionsComponent }, //Weekly emissions component
+    { path: 'food-emissions', component: FoodEmissionsComponent } // Food emissions component
 ];

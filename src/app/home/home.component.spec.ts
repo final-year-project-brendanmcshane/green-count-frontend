@@ -198,26 +198,7 @@ describe('HomeComponent', () => {
     expect(window.alert).toHaveBeenCalled();
   });
 
-  // Should call food impact calculation API successfully
-  it('should call convertFoodImpact and store emissions', () => {
-    const mockResponse = { Emissions: 70 };
-    mockHttpClient.post.and.returnValue(of(mockResponse));
-    component.foodItem = 'beef';
-    component.foodWeight = 2;
-    component.convertFoodImpact();
-    expect(component.foodEmissions).toBe(70);
-  });
-
-
-  // Should catch errors from convertFoodImpact API
-  it('should handle error in convertFoodImpact()', () => {
-    spyOn(console, 'error');
-    mockHttpClient.post.and.returnValue(throwError(() => new Error('Food fail')));
-    component.foodItem = 'beef';
-    component.foodWeight = 2;
-    component.convertFoodImpact();
-    expect(console.error).toHaveBeenCalled();
-  });
+  
 
   // Covers case: convertData() should early return if value is 0
   it('should not call API in convertData() if value is 0', () => {

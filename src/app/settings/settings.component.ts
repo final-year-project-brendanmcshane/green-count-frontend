@@ -13,6 +13,7 @@ export class SettingsComponent implements OnInit {
   enableDarkMode = false;
   enableAnimations = true;
 
+  // Load saved preferences from localStorage on component init
   ngOnInit(): void {
     const savedDarkMode = localStorage.getItem('enableDarkMode');
     const savedAnimations = localStorage.getItem('enableAnimations');
@@ -28,6 +29,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  // Persist current settings to localStorage and apply them
   saveSettings(): void {
     localStorage.setItem('enableDarkMode', this.enableDarkMode.toString());
     localStorage.setItem('enableAnimations', this.enableAnimations.toString());
@@ -48,6 +50,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  // Enable or disable global page animations based on user setting
   applyAnimations(): void {
     if (this.enableAnimations) {
       document.body.classList.remove('no-animations');

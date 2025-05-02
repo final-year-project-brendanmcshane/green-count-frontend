@@ -35,6 +35,7 @@ export class SignupComponent {
     private router: Router
   ) {}
 
+  // Handles signup form submission and navigates to login on success
   onSubmit(): void {
     this.authService.signup(this.email, this.password).subscribe({
       next: (response) => {
@@ -47,6 +48,7 @@ export class SignupComponent {
     });
   }
 
+  // Navigates back to the login page
   goToLogin(): void {
     this.router.navigate(['/login']);
   }

@@ -9,6 +9,7 @@ describe('WeeklyEmissionsComponent', () => {
   let router: Router;
   let navigateSpy: jasmine.Spy;
 
+  // Set up the testing module and component instance before each test
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, WeeklyEmissionsComponent],
@@ -51,7 +52,7 @@ describe('WeeklyEmissionsComponent', () => {
     expect(component.foodEntries()[lastIndex]).toEqual({ type: 'chicken', quantity: 7 });
   });
   
-
+  // Validates that the totalEmissions calculation matches expected output for known inputs
   it('should calculate total emissions correctly', () => {
     component.selectedVehicle.set('diesel');
     component.milesDriven.set(50);
@@ -73,6 +74,7 @@ describe('WeeklyEmissionsComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/home']);
   });
 
+  // Tests the toggle functionality of the side navigation menu using DOM manipulation
   describe('toggleMenu()', () => {
     let offcanvas: HTMLElement;
     let getByIdSpy: jasmine.Spy;

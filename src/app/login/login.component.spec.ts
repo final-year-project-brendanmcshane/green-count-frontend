@@ -33,7 +33,8 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy(); // Checks if the component is created successfully
   });
-
+  
+  // Test login flow: simulates successful login and verifies navigation to home
   it('should call login and navigate to /home on success', () => {
     const mockResponse = {
       access_token: 'token',

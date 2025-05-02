@@ -9,14 +9,16 @@ describe('FoodEmissionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      // Import the standalone FoodEmissionsComponent for testing
       imports: [FoodEmissionsComponent],
       providers: [
         {
+          // Provide a mocked ActivatedRoute for compatibility, even if unused
           provide: ActivatedRoute,
           useValue: {
             snapshot: { params: {} },
             queryParams: of({}),
-            paramMap: of({ get: () => null })  // mock get() for paramMap.get('someParam')
+            paramMap: of({ get: () => null })  // mock get() for paramMap.get('someParam'), Safe default to prevent errors in tests
           }
         }
       ]
