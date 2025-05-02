@@ -40,3 +40,13 @@ Run tests and generate a coverage report:
 
 ```bash
 ng test --code-coverage
+```
+Output summary:
+ ✅ All 84 tests pass
+ 📈 Coverage:
+ - Statements: 72.08%
+ - Branches: 50%
+ - Functions: 71.7%
+ - Lines: 71.94%
+
+
